@@ -12,11 +12,11 @@ class Model {
     }
 }
 
+let models = {};
+let timesSeries = {};
+let id = 0;
 
-models = {};
-id = 0;
-
-
+const {TimeSeries} = require('./TimeSeries');
 const express = require('express');
 const app = express();
 
@@ -28,7 +28,9 @@ app.get('/', ((req, res) => {
 app.post('/api/model', ((req, res) => {
     console.log(req.query.model_type);
     models[++id] = new Model(id, id % 2 === 0 ? "ready" : "pending");
-    res.send(models[id].toJson());
+    timesSeries[id] = new TimeSeries({"altitude_gps": [100, 110, 20], "heading_gps": [0.6, 0.59, 0.54] })
+    //res.send(models[id].toJson());
+    res.send(timesSeries[id]);
 }))
 
 app.get('/api/model', ((req, res) => {
@@ -52,7 +54,6 @@ app.delete('/api/model', ((req, res) => {
 
 app.get('/api/models', ((req, res) => {
     var arr = [];
-
     for (var key in models) {
         if (models.hasOwnProperty(key)) {
             arr.push(models[key]);
