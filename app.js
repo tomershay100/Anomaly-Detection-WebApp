@@ -12,10 +12,8 @@ class Model {
     }
 }
 
-
 models = {};
 id = 0;
-
 
 const express = require('express');
 const app = express();
@@ -24,6 +22,13 @@ app.get('/', ((req, res) => {
     res.sendFile(process.cwd() + '/index.html');
 }))
 
+app.get('/index.js', ((req, res) => {
+    res.sendFile(process.cwd() + '/index.js');
+}))
+
+app.get('/index.css', ((req, res) => {
+    res.sendFile(process.cwd() + '/index.css');
+}))
 
 app.post('/api/model', ((req, res) => {
     console.log(req.query.model_type);
@@ -59,6 +64,7 @@ app.get('/api/models', ((req, res) => {
         }
     }
     res.send(arr);
+    console.log("GET /api/models")
 }))
 
 app.post('/api/anomaly', ((req, res) => {
