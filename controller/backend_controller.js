@@ -16,21 +16,29 @@ class Model {
     }
 }
 
-
 models = {};
 id = 0;
 
-
 const express = require('express');
 const app = express();
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 
 app.get('/', ((req, res) => {
-    res.sendFile(process.cwd() + '/index.html');
+    res.sendFile(process.cwd() + '/view/index.html');
 }))
 
+app.get('/frontend_controller.js', ((req, res) => {
+    res.sendFile(process.cwd() + '/controller/frontend_controller.js');
+}))
+
+app.get('/index.css', ((req, res) => {
+    res.sendFile(process.cwd() + '/view/index.css');
+}))
 
 app.post('/api/model', ((req, res) => {
-    console.log(req.query.model_type);
+    //console.log(req.query.model_type);
+    //console.log(req.body);
     models[++id] = new Model(id, id % 2 === 0 ? "ready" : "pending");
     res.send(models[id].toJson());
 }))
@@ -41,7 +49,6 @@ app.get('/api/model', ((req, res) => {
         res.status(200).end()
     } else {
         res.status(404).end()
-
     }
 }))
 
