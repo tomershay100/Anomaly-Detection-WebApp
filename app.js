@@ -50,28 +50,22 @@ app.delete('/api/model', ((req, res) => {
     }
 }))
 
-app.get('/api/models', ((req, res) => {
-    var arr = [];
-
-    for (var key in models) {
-        if (models.hasOwnProperty(key)) {
-            arr.push(models[key]);
-        }
-    }
-    res.send(arr);
-}))
-
 app.post('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
-        if(models[req.query.model_id].status === "pending")
-            res.redirect("/api/model?model_id=" + req.query.model_id)
-            //res.redirect("https://google.com")
-        else
-            res.send({ anomalies:{ col_name_1: [[1,8]], col_name_2: [[2,3], [12,16]]}, reason: "Any"});
         res.status(200).end()
     } else {
         res.status(404).end()
     }
 }))
 
-app.listen(3000);
+app.get('/api/anomaly', ((req, res) => {
+    if (models.hasOwnProperty(req.query.model_id)) {
+
+        res.send({feature : req.query.feature.toString() + "1", anomalies : [[2,3],[50,70]]});
+        res.status(200).end()
+    } else {
+        res.status(404).end()
+    }
+}))
+
+app.listen(8080);
