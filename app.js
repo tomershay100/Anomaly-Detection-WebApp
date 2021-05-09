@@ -1,3 +1,7 @@
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 class Model {
     constructor(id, stat) {
         this.id = id;
@@ -60,9 +64,10 @@ app.post('/api/anomaly', ((req, res) => {
 
 app.get('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
-
-        res.send({feature : req.query.feature.toString() + "1", anomalies : [[2,3],[50,70]]});
-        res.status(200).end()
+        sleep(3000).then(() => {
+            res.send({feature: req.query.feature + "1", anomalies: [[2, 3], [50, 70]]});
+            res.status(200).end();
+        });
     } else {
         res.status(404).end()
     }
