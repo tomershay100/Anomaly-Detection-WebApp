@@ -62,39 +62,48 @@ function sendDataToServer(trainJson, testJson, modelType) {
     xhttp.send(JSON.stringify(trainJson));
     document.getElementById("listOfFiles").innerHTML =
         "loading..";
-
     xhttp.onload = function () {
+
+//        console.log(/*this.readyState === 4 && */this.status === 200);
+
         if (this.readyState === 4 && this.status === 200) {
-            let modelID =  JSON.parse(xhttp.response)["model_id"];
-            console.log(xhttp.response);
-
-            let xhttp1;
-            xhttp1 = new XMLHttpRequest();
-
-            xhttp1.open("POST", "/api/anomaly" + "?model_id=" + modelID, true);
-            xhttp1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhttp1.send(JSON.stringify(testJson));
-
-            xhttp1.onload = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    let xhttp2;
-                    xhttp2 = new XMLHttpRequest();
-
-                    xhttp2.open("GET", "/api/anomaly" + "?model_id=" + modelID, true);
-                    xhttp2.send();
-
-                    xhttp2.onload = function () {
-                        if (this.readyState === 4 && this.status === 200) {
-                            document.getElementById("listOfFiles").innerHTML =
-                                "YAY";
-                        }
-                    };
-                }
-            };
+           onLoadTrain(xhttp,testJson);
         }
     };
 }
+function onLoadTrain(xhttp,testJson){
+    let modelID =  JSON.parse(xhttp.response)["model_id"];
+    console.log(xhttp.response);
 
+    let xhttp1;
+    xhttp1 = new XMLHttpRequest();
+
+    xhttp1.open("POST", "/api/anomaly" + "?model_id=" + modelID, true);
+    xhttp1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp1.send(JSON.stringify(testJson));
+
+    xhttp1.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            onLoadTest(modelID)
+        }
+    };}
+function onLoadTest(modelID){
+    let xhttp2;
+    xhttp2 = new XMLHttpRequest();
+
+    xhttp2.open("GET", "/api/anomaly" + "?model_id=" + modelID, true);
+    xhttp2.send();
+
+    xhttp2.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            onLoadFeedback();
+        }
+    };
+}
+function onLoadFeedback(){
+    document.getElementById("listOfFiles").innerHTML =
+        "YAY";
+}
 function syncList() {
     setTimeout(updateList, 0);
 }
