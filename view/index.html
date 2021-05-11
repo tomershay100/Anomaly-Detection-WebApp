@@ -1,126 +1,60 @@
 <!DOCTYPE html>
 <html lang="">
-<script src="/frontend_controller.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="frontend_controller.js"></script>
+<script src="index.js"></script>
+
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        /* Create two equal columns that floats next to each other */
-        .column11 {
-            float: left;
-            width: 80%;
-            padding: 10px;
-            height: 500px;
-        }
-
-        .column21 {
-            float: left;
-            width: 80%;
-            padding: 10px;
-            height: 200px;
-        }
-
-        .column12 {
-            float: right;
-            width: 20%;
-            padding: 10px;
-            height: 500px;
-        }
-
-        .column22 {
-            float: right;
-            width: 20%;
-            padding: 10px;
-            height: 200px;
-        }
-
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-        @media screen and (max-width: 600px) and (max-height: 400px) {
-            .column11 {
-                width: 100%;
-                height: 100%;
-            }
-
-            .column21 {
-                width: 100%;
-                height: 100%;
-            }
-
-            .column12 {
-                width: 100%;
-                height: 100%;
-            }
-
-            .column22 {
-                width: 100%;
-                height: 100%;
-            }
-        }
-    </style>
-    <title>TITLE</title>
+    <title>Anomaly Detection WebApp</title>
 </head>
 <body>
 
-<h2>Title</h2>
+<h2>Anomaly Detection WebApp</h2>
 
 <div class="row">
     <div class="column11" style="background-color:#FEEFEE;">
-        <h2>Graph will be HERE</h2>
+        <h2></h2>
+        <div id="chartContainer" style="width: 100%; height: 90%;display: none;"></div>
+        <div id="loading" style="display: none;">
+        <section style="display: inline-block">
+            <div id="loader" class="loader" style="display: none; position: center">
+                <span style="--i:1;"></span>
+                <span style="--i:2;"></span>
+                <span style="--i:3;"></span>
+                <span style="--i:4;"></span>
+                <span style="--i:5;"></span>
+                <span style="--i:6;"></span>
+                <span style="--i:7;"></span>
+                <span style="--i:8;"></span>
+                <span style="--i:9;"></span>
+                <span style="--i:10;"></span>
+                <span style="--i:11;"></span>
+                <span style="--i:12;"></span>
+                <span style="--i:13;"></span>
+                <span style="--i:14;"></span>
+                <span style="--i:15;"></span>
+                <span style="--i:16;"></span>
+                <span style="--i:17;"></span>
+                <span style="--i:18;"></span>
+                <span style="--i:19;"></span>
+                <span style="--i:20;"></span>
+            </div>
+        </section>
+        </div>
     </div>
     <div class="column12" style="background-color:#EFFEFF;">
         <h2>Lists will be HERE</h2>
         <form name="form1">
-            <input id="txtValue" name="txtValue" type="text"/>
-            <input type="button" name="add" value="Add" onclick="addValue();"/>
-            <select id="lstValue" name="lstValue" multiple>
-                <option value="empty">
-            </select>
-            <input type="button" name="delete" value="Delete" onclick="deleteValue();"/>
+            <select id="lstValue" name="lstValue" size="23" onchange="selectFeature()"></select>
         </form>
         <p id="listOfFiles"></p>
-        <input type="button" onclick="updateList()" value="Display">
     </div>
-</div>
 <div class="row">
     <div class="column21" style="background-color:#EFFEFF;">
         <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
-        <script>
-            function saveTrainFile(input) {
-                let file = input.files[0];
-                let reader = new FileReader();
-                reader.readAsText(file);
-                reader.onload = function () {
-                    TrainString = reader.result;
-                };
-                reader.onerror = function () {
-                    TrainString = 'error';
-                };
-            }
-        </script>
         <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
-        <script>
-            function saveTestFile(input) {
-                let file = input.files[0];
-                let reader = new FileReader();
-                reader.readAsText(file);
-                reader.onload = function () {
-                    TestString = reader.result;
-                };
-                reader.onerror = function () {
-                    TestString = 'error';
-                };
-            }
-        </script>
         <br> <br> <br>
         <div>
             <input type="radio" id="regression" name="modelType" value="regression" checked="checked">
@@ -131,29 +65,11 @@
 
     </div>
     <div class="column22" style="background-color:#FEEFEE;">
-<!--        <h2>Drop zone will be HERE</h2>-->
         <input type="submit" onclick="submit()">
-        <script>
-            function submit() {
-                if (TrainString === undefined || TestString === undefined) {
-                    document.getElementById('errorOnSubmit').innerHTML = "please upload both train and test files.";
-                    return;
-                }
-                if (TrainString === 'error' || TestString === 'error') {
-                    document.getElementById('errorOnSubmit').innerHTML = "error while uploading files, please upload again";
-                    return;
-                }
-                ModelType = document.getElementById('regression').checked ? "regression" : "hybrid";
-                sendDataToServer({train_data:parseCsv(TrainString)}, {predict_data:parseCsv(TestString)}, ModelType)
-                document.getElementById('errorOnSubmit').innerHTML = "files uploaded successfully";
-                sleep(3000).then(() => {
-                    document.getElementById('errorOnSubmit').innerHTML = '';
-                });
-            }
-        </script>
         <br>
         <p id="errorOnSubmit"></p>
     </div>
+</div>
 </div>
 </body>
 </html>

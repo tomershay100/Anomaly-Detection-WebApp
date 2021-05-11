@@ -2,11 +2,13 @@ let TrainString;
 let TestString;
 let ModelType;
 let Features;
+let TrainMap;
+let TestMap;
+let ModelId;
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
-
 
 function parseCsv(csvStringFile) {
     let map = {};
@@ -107,55 +109,37 @@ function onLoadTest(modelID) {
 
 function onLoadFeedback() {
     let x = document.getElementById("lstValue");
+    let isFirst = true;
     for (const feature of Features) {
         let option = document.createElement("option");
         option.text = feature;
         x.add(option);
     }
+    //inline-block
+    document.getElementById("chartContainer").style.display = "inline-block"; //.innerHTML = document.getElementById("lstValue").value;
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("loading").style.display = "none";
 
-    document.getElementById("listOfFiles").innerHTML =
-        "YAY";
+
+    document.getElementById("listOfFiles").innerHTML = "";
+    selectFeature();
 }
 
-function syncList() {
-    setTimeout(updateList, 0);
-}
+function selectFeature() {
+    let feature = document.getElementById("lstValue").value
+    let xhttp;
+    let corrFeature;
+    let anomalies;
+    xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/api/anomaly" + "?model_id=" + ModelId + "&?feature=" + feature, true);
+    xhttp.send();
+    xhttp.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            anomalies = JSON.parse(xhttp.response)["anomalies"];
+            corrFeature = JSON.parse(xhttp.response)["feature"];
+            drawGraph(feature, corrFeature, anomalies);
+        }
+    };
 
-function updateList() {
-    //while (true) {
-    //sleep(1000).then(r => {
 
-    //});
-
-    // }
-}
-
-var lastAddedIndex = 0;
-
-function addValue(value) {
-    //alert("Please select any item from the ListBox");
-
-    //var v = document.form1.txtValue.value;
-    //document.getElementById("tomer").innerHTML=v;
-    // get the TextBox Value and assign it into the variable
-    document.form1.lstValue.options[lastAddedIndex++] = new Option(value, value);
-    return true;
-}
-
-function deleteValue() {
-    var s = 1;
-    var Index;
-    if (document.form1.lstValue.selectedIndex === -1) {
-        alert("Please select any item from the ListBox");
-        return true;
-    }
-    while (s > 0) {
-        Index = document.form1.lstValue.selectedIndex;
-        if (Index >= 0) {
-            document.form1.lstValue.options[Index] = null;
-            --lastAddedIndex;
-        } else
-            document.s = 0;
-    }
-    return true;
 }
