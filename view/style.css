@@ -4,63 +4,53 @@
     box-sizing: content-box;
 }
 
-/* Create two equal columns that floats next to each other */
-.column11 {
-    float: left;
-    width: 77%;
-    padding: 10px;
-    height: 500px;
+/* Split the screen in half */
+.split {
+    position: fixed;
+    padding: 3%;
 }
 
-.column21 {
-    float: left;
-    width: 77%;
-    padding: 10px;
-    height: 200px;
+/* Control the left side */
+.left {
+    width: 75%;
+    left: 0;
+    background-color: #111;
 }
 
-.column12 {
-    float: right;
-    width: 20%;
-    padding: 10px;
-    height: 500px;
+/* Control the right side */
+.right {
+    width: 25%;
+    right: 0;
+    background-color: red;
 }
 
-.column22 {
-    float: right;
-    width: 20%;
-    padding: 10px;
-    height: 200px;
+/* Control the left side */
+.up {
+    height: 70%;
+    top: 0;
+    background-color: #FFEEFFEE;
 }
 
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
+/* Control the right side */
+.down {
+    height: 30%;
+    bottom: 0;
+    background-color: #EEFFEEFF;
 }
 
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) and (max-height: 400px) {
-    .column11 {
-        width: 100%;
-        height: 100%;
-    }
+/* If you want the content centered horizontally and vertically */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
 
-    .column21 {
-        width: 100%;
-        height: 100%;
-    }
-
-    .column12 {
-        width: 100%;
-        height: 100%;
-    }
-
-    .column22 {
-        width: 100%;
-        height: 100%;
-    }
+/* Style the image inside the centered container, if needed */
+.centered img {
+    width: 150px;
+    border-radius: 50%;
 }
 
 section {

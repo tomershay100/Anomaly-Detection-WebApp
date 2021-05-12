@@ -11,13 +11,9 @@
 </head>
 <body>
 
-<h2>Anomaly Detection WebApp</h2>
-
-<div class="row">
-    <div class="column11" style="background-color:#FEEFEE;">
-        <h2></h2>
-        <div id="chartContainer" style="width: 100%; height: 90%;display: none;"></div>
-        <div id="loading" style="display: none;">
+<div class="split up left">
+    <div id="chartContainer" style="width: 100%; height: 90%;display: none;"></div>
+    <div id="loading" style="display: none;">
         <section style="display: inline-block">
             <div id="loader" class="loader" style="display: none; position: center">
                 <span style="--i:1;"></span>
@@ -42,34 +38,32 @@
                 <span style="--i:20;"></span>
             </div>
         </section>
-        </div>
-    </div>
-    <div class="column12" style="background-color:#EFFEFF;">
-        <h2>Lists will be HERE</h2>
-        <form name="form1">
-            <select id="lstValue" name="lstValue" size="23" onchange="selectFeature()"></select>
-        </form>
-        <p id="listOfFiles"></p>
-    </div>
-<div class="row">
-    <div class="column21" style="background-color:#EFFEFF;">
-        <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
-        <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
-        <br> <br> <br>
-        <div>
-            <input type="radio" id="regression" name="modelType" value="regression" checked="checked">
-            <label for="regression">linear regression</label><br>
-            <input type="radio" id="hybrid" name="modelType" value="hybrid">
-            <label for="hybrid">hybrid</label><br>
-        </div>
-
-    </div>
-    <div class="column22" style="background-color:#FEEFEE;">
-        <input type="submit" onclick="submit()">
-        <br>
-        <p id="errorOnSubmit"></p>
     </div>
 </div>
+<div class="split up right" >
+    <h2>Lists will be HERE</h2>
+    <form name="form1">
+        <select id="lstValue" name="lstValue" size="23" onchange="selectFeature()"></select>
+    </form>
+    <p id="listOfFiles"></p>
+</div>
+
+
+<div class="split down left" >
+    <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
+    <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
+    <br> <br> <br>
+    <div>
+        <input type="radio" id="regression" name="modelType" value="regression" checked="checked">
+        <label for="regression">linear regression</label><br>
+        <input type="radio" id="hybrid" name="modelType" value="hybrid">
+        <label for="hybrid">hybrid</label><br>
+    </div>
+</div>
+<div class="split down right">
+    <input type="submit" onclick="submit()">
+    <br>
+    <p id="errorOnSubmit"></p>
 </div>
 </body>
 </html>

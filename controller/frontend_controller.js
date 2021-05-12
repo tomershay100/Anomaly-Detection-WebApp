@@ -77,8 +77,7 @@ function sendDataToServer(trainJson, testJson, modelType) {
 
 function onLoadTrain(xhttp, testJson) {
     let modelID = JSON.parse(xhttp.response)["model_id"];
-    console.log(xhttp.response);
-
+    ModelId = modelID;
     let xhttp1;
     xhttp1 = new XMLHttpRequest();
 
@@ -88,7 +87,8 @@ function onLoadTrain(xhttp, testJson) {
 
     xhttp1.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            onLoadTest(modelID)
+
+            onLoadTest(modelID);
         }
     };
 }
@@ -113,6 +113,10 @@ function onLoadFeedback() {
     for (const feature of Features) {
         let option = document.createElement("option");
         option.text = feature;
+        if (isFirst) {
+            option.selected = true;
+            isFirst = false;
+        }
         x.add(option);
     }
     //inline-block
@@ -141,5 +145,76 @@ function selectFeature() {
         }
     };
 
+
+}
+
+function drawGraph(feature, corrFeature, anomalies) {
+    let maxX = 0;
+    let minX = 0;
+    let isFirst = true;
+    let maxY = 0;
+    let minY = 0;
+    let data = [];
+    let dataSeries = {
+        type: "line", markerSize: 5, showLine: false,
+        dataPoints: []
+    };
+    let dataPoints = [];
+    for (let i = 0; i < TestMap[feature].length; i++) {
+        let isAnomaly = false;
+        for (const array of anomalies) {
+            if (i >= array[0] && i < array[1]) {
+                isAnomaly = true;
+                break;
+            }
+        }
+
+        let y = TestMap[corrFeature][i];
+        let x = TestMap[feature][i];
+
+        dataPoints.push({
+            x: x,
+            y: y,
+            markerColor: isAnomaly ? "red" : "blue",
+        });
+        if (maxX < x || isFirst) {
+            maxX = x;
+        }
+        if (minX > x || isFirst)
+            minX = x;
+        if (maxY < y || isFirst) {
+            maxY = y;
+        }
+        if (minY > y || isFirst)
+            minY = y;
+        isFirst = false
+    }
+
+    dataSeries.dataPoints = dataPoints;
+    data.push(dataSeries);
+
+    let chart = new CanvasJS.Chart("chartContainer",
+        {
+            zoomEnabled: true,
+            /*
+                        theme: "dark2",
+            */
+            title: {
+                text: "Anomalies Graph"
+            },
+            axisX: {
+                title: feature,
+                viewportMinimum: minX,
+                viewportMaximum: maxX
+            },
+            axisY: {
+                title: corrFeature,
+                viewportMinimum: minY,
+                viewportMaximum: maxY
+            },
+            data: data  // random generator below
+        });
+
+    chart.render();
 
 }
