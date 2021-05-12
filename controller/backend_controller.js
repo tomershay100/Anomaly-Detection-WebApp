@@ -1,3 +1,7 @@
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 class Model {
     constructor(id, stat) {
         this.id = id;
@@ -19,11 +23,21 @@ let id = 0;
 const {TimeSeries} = require('./TimeSeries');
 const express = require('express');
 const app = express();
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
+process.chdir('../');
 
 app.get('/', ((req, res) => {
-    res.sendFile(process.cwd() + '/index.html');
+    res.sendFile(process.cwd() + '/view/index.html');
 }))
 
+app.get('/frontend_controller.js', ((req, res) => {
+    res.sendFile(process.cwd() + '/controller/frontend_controller.js');
+}))
+
+app.get('/index.css', ((req, res) => {
+    res.sendFile(process.cwd() + '/view/index.css');
+}))
 
 app.post('/api/model', ((req, res) => {
     console.log(req.query.model_type);
@@ -54,6 +68,7 @@ app.delete('/api/model', ((req, res) => {
 
 app.get('/api/models', ((req, res) => {
     var arr = [];
+
     for (var key in models) {
         if (models.hasOwnProperty(key)) {
             arr.push(models[key]);
@@ -75,4 +90,15 @@ app.post('/api/anomaly', ((req, res) => {
     }
 }))
 
-app.listen(3000);
+app.get('/api/anomaly', ((req, res) => {
+    if (models.hasOwnProperty(req.query.model_id)) {
+        sleep(3000).then(() => {
+            res.send({feature: req.query.feature + "1", anomalies: [[2, 3], [50, 70]]});
+            res.status(200).end();
+        });
+    } else {
+        res.status(404).end()
+    }
+}))
+
+app.listen(8080);
