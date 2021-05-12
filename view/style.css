@@ -1,65 +1,97 @@
 * {
-    margin: 0;
-    /*padding: 0;*/
+    margin: 1px;
     box-sizing: content-box;
 }
 
-/* Split the screen in half */
+@media (prefers-color-scheme: dark) {}
+
+body {
+    background-color: black;
+    color: white;
+}
+
+html[data-theme='dark'] {
+    --text-color-normal: hsl(210, 10%, 62%);
+    --text-color-light: hsl(210, 15%, 35%);
+    --text-color-richer: hsl(210, 50%, 72%);
+    --text-color-highlight: hsl(25, 70%, 45%);
+}
+
 .split {
     position: fixed;
     padding: 3%;
 }
 
-/* Control the left side */
 .left {
-    width: 75%;
+    width: 80%;
     left: 0;
-    background-color: #111;
 }
 
-/* Control the right side */
 .right {
-    width: 25%;
+    width: 20%;
     right: 0;
-    background-color: red;
 }
 
-/* Control the left side */
 .up {
-    height: 70%;
+    height: 85%;
     top: 0;
-    background-color: #FFEEFFEE;
+    background-color: #212121;
 }
 
-/* Control the right side */
 .down {
-    height: 30%;
+    height: 15%;
     bottom: 0;
-    background-color: #EEFFEEFF;
+    background-color: #121212;
 }
 
-/* If you want the content centered horizontally and vertically */
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+.list {
+    width: 100%;
+    height: 100%;
+    background-color: #121212;
+    position: relative;
 }
 
-/* Style the image inside the centered container, if needed */
-.centered img {
-    width: 150px;
-    border-radius: 50%;
+select option {
+    background: rgb(0, 0, 0);
+    color: #bfbfbf;
+}
+
+.boxGlow {
+    /*background-color: #fff;*/
+    box-shadow: 0 0 35px 9px #0ff;
+    /* in order: x offset, y offset, blur size, spread size, color */
+    /* blur size and spread size are optional (they default to 0) */
+}
+
+.glow {
+    font-size: 33px;
+    color: #fff;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    }
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    }
+}
+
+#chartContainer {
+    height: 74%;
+    width: 88%;
+    display: none;
 }
 
 section {
-    width: 100%;
+    width: 88%;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
-    background: #042104;
+    min-height: 77%;
     animation: animateBg 10s linear infinite;
 }
 @keyframes animateBg {
@@ -82,8 +114,6 @@ section .loader span {
     position: absolute;
     justify-content: center;
     align-items: center;
-    /*top: 150%;
-    Left: 550%;*/
     width: 100%;
     height: 100%;
     transform: rotate(calc(18deg * var(--i)));
@@ -116,4 +146,13 @@ section .loader span::before {
     {
         transform: scale(0);
     }
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
 }

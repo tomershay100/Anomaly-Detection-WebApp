@@ -63,12 +63,7 @@ function sendDataToServer(trainJson, testJson, modelType) {
     xhttp.open("POST", "/api/model" + "?model_type=" + modelType, true);
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(trainJson));
-    document.getElementById("listOfFiles").innerHTML =
-        "loading..";
     xhttp.onload = function () {
-
-//        console.log(/*this.readyState === 4 && */this.status === 200);
-
         if (this.readyState === 4 && this.status === 200) {
             onLoadTrain(xhttp, testJson);
         }
@@ -122,10 +117,6 @@ function onLoadFeedback() {
     //inline-block
     document.getElementById("chartContainer").style.display = "inline-block"; //.innerHTML = document.getElementById("lstValue").value;
     document.getElementById("loader").style.display = "none";
-    document.getElementById("loading").style.display = "none";
-
-
-    document.getElementById("listOfFiles").innerHTML = "";
     selectFeature();
 }
 
@@ -175,7 +166,7 @@ function drawGraph(feature, corrFeature, anomalies) {
         dataPoints.push({
             x: x,
             y: y,
-            markerColor: isAnomaly ? "red" : "blue",
+            markerColor: isAnomaly ? "#ff4da6" : "#0ff",
         });
         if (maxX < x || isFirst) {
             maxX = x;
@@ -196,9 +187,7 @@ function drawGraph(feature, corrFeature, anomalies) {
     let chart = new CanvasJS.Chart("chartContainer",
         {
             zoomEnabled: true,
-            /*
-                        theme: "dark2",
-            */
+            theme: "dark2",
             title: {
                 text: "Anomalies Graph"
             },
@@ -212,7 +201,11 @@ function drawGraph(feature, corrFeature, anomalies) {
                 viewportMinimum: minY,
                 viewportMaximum: maxY
             },
-            data: data  // random generator below
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
         });
 
     chart.render();

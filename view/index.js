@@ -4,6 +4,7 @@ function saveTrainFile(input) {
     reader.readAsText(file);
     reader.onload = function () {
         TrainString = reader.result;
+        document.getElementById("trainFileName").innerHTML = file.name
     };
     reader.onerror = function () {
         TrainString = 'error';
@@ -16,6 +17,7 @@ function saveTestFile(input) {
     reader.readAsText(file);
     reader.onload = function () {
         TestString = reader.result;
+        document.getElementById("testFileName").innerHTML = file.name
     };
     reader.onerror = function () {
         TestString = 'error';
@@ -39,7 +41,5 @@ function submit() {
     sleep(3000).then(() => {
         document.getElementById('errorOnSubmit').innerHTML = '';
     });
-    document.getElementById("loading").style.display = "inline-block";
     document.getElementById("loader").style.display = "inline-block";
-
 }
