@@ -25,6 +25,7 @@ function saveTestFile(input) {
 }
 
 function submit() {
+    document.getElementById("chartContainer").style.display = "none";
     if (TrainString === undefined || TestString === undefined) {
         document.getElementById('errorOnSubmit').innerHTML = "please upload both train and test files.";
         return;
