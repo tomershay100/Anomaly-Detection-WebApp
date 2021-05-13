@@ -80,7 +80,7 @@ select option {
     }
 }
 
-#chartContainer {
+#anomaliesGraph {
     height: 74%;
     width: 88%;
     display: none;

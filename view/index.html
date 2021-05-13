@@ -12,7 +12,7 @@
 <body>
 
 <div class="split up left">
-    <div id="chartContainer"></div>
+    <div id="anomaliesGraph"></div>
     <section>
         <div id="loader" class="loader" style="display: none">
             <span style="--i:1;"></span>
@@ -40,9 +40,9 @@
 </div>
 <div class="split up right">
     <h2>Features List</h2>
-    <form name="form1">
-        <label for="lstValue"></label><select class="list" id="lstValue" name="lstValue" size="23"
-                                              onchange="selectFeature()"></select>
+    <form>
+        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="23"
+                                                  onchange="selectFeature()"></select>
     </form>
 </div>
 
@@ -52,7 +52,7 @@
         <i class="fa fa-cloud-upload"></i> Train Upload
     </label>
     <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
-    <p id="trainFileName" style="display:inline" ></p>
+    <p id="trainFileName" style="display:inline"></p>
     <label for="testFile" class="custom-file-upload boxGlow">
         <i class="fa fa-cloud-upload"></i> Test Upload
     </label>

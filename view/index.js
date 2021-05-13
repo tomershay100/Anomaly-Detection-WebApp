@@ -25,7 +25,7 @@ function saveTestFile(input) {
 }
 
 function submit() {
-    document.getElementById("chartContainer").style.display = "none";
+    document.getElementById("anomaliesGraph").style.display = "none";
     if (TrainString === undefined || TestString === undefined) {
         document.getElementById('errorOnSubmit').innerHTML = "please upload both train and test files.";
         return;
@@ -43,4 +43,31 @@ function submit() {
         document.getElementById('errorOnSubmit').innerHTML = '';
     });
     document.getElementById("loader").style.display = "inline-block";
+}
+
+function addFeature(feature) {
+    let featuresList = document.getElementById("featuresList");
+    let option = document.createElement("option");
+    option.text = feature;
+    featuresList.add(option);
+}
+
+function FeatureSelection(feature) {
+    let featuresList = document.getElementById("featuresList");
+    for (let option of featuresList) {
+        if(option.text === feature)
+            option.selected = true;
+    }
+}
+
+function showGraph() {
+    document.getElementById("anomaliesGraph").style.display = "inline-block";
+}
+
+function hideLoader() {
+    document.getElementById("loader").style.display = "none";
+}
+
+function currentFeature() {
+    return document.getElementById("featuresList").value
 }

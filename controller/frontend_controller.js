@@ -4,7 +4,7 @@ let ModelType;
 let Features;
 let TrainMap;
 let TestMap;
-let ModelId;
+let ModelID;
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -57,86 +57,77 @@ function parseCsv(csvStringFile) {
 }
 
 function sendDataToServer(trainJson, testJson, modelType) {
-    let xhttp;
-    xhttp = new XMLHttpRequest();
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
 
-    xhttp.open("POST", "/api/model" + "?model_type=" + modelType, true);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify(trainJson));
-    xhttp.onload = function () {
+    httpRequest.open("POST", "/api/model" + "?model_type=" + modelType, true);
+    httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    httpRequest.send(JSON.stringify(trainJson));
+    httpRequest.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            onLoadTrain(xhttp, testJson);
+            ModelID = JSON.parse(httpRequest.response)["model_id"];
+            onLoadTrain(testJson);
         }
     };
 }
 
-function onLoadTrain(xhttp, testJson) {
-    let modelID = JSON.parse(xhttp.response)["model_id"];
-    ModelId = modelID;
-    let xhttp1;
-    xhttp1 = new XMLHttpRequest();
+function onLoadTrain(testJson) {
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
 
-    xhttp1.open("POST", "/api/anomaly" + "?model_id=" + modelID, true);
-    xhttp1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp1.send(JSON.stringify(testJson));
+    httpRequest.open("POST", "/api/anomaly" + "?model_id=" + ModelID, true);
+    httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    httpRequest.send(JSON.stringify(testJson));
 
-    xhttp1.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-
-            onLoadTest(modelID);
-        }
+    httpRequest.onload = function () {
+        if (this.readyState === 4 && this.status === 200)
+            onLoadTest();
     };
 }
 
-function onLoadTest(modelID) {
-    let xhttp2;
-    xhttp2 = new XMLHttpRequest();
+function onLoadTest() {
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
 
-    xhttp2.open("GET", "/api/anomaly" + "?model_id=" + modelID, true);
-    xhttp2.send();
+    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID, true);
+    httpRequest.send();
 
-    xhttp2.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
+    httpRequest.onload = function () {
+        if (this.readyState === 4 && this.status === 200)
             onLoadFeedback();
-        }
     };
 }
 
 function onLoadFeedback() {
-    let x = document.getElementById("lstValue");
     let isFirst = true;
     for (const feature of Features) {
-        let option = document.createElement("option");
-        option.text = feature;
-        if (isFirst) {
-            option.selected = true;
-            isFirst = false;
-        }
-        x.add(option);
+        addFeature(feature)
+        if (isFirst)
+            FeatureSelection(feature);
+        isFirst = false;
     }
-    //inline-block
-    document.getElementById("chartContainer").style.display = "inline-block"; //.innerHTML = document.getElementById("lstValue").value;
-    document.getElementById("loader").style.display = "none";
+    showGraph();
+    hideLoader();
     selectFeature();
 }
 
 function selectFeature() {
-    let feature = document.getElementById("lstValue").value
-    let xhttp;
+    let feature = currentFeature();
     let corrFeature;
     let anomalies;
-    xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/api/anomaly" + "?model_id=" + ModelId + "&?feature=" + feature, true);
-    xhttp.send();
-    xhttp.onload = function () {
+
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&?feature=" + feature, true);
+    httpRequest.send();
+
+    httpRequest.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            anomalies = JSON.parse(xhttp.response)["anomalies"];
-            corrFeature = JSON.parse(xhttp.response)["feature"];
+            anomalies = JSON.parse(httpRequest.response)["anomalies"];
+            corrFeature = JSON.parse(httpRequest.response)["feature"];
             drawGraph(feature, corrFeature, anomalies);
         }
     };
-
-
 }
 
 function drawGraph(feature, corrFeature, anomalies) {
@@ -147,8 +138,7 @@ function drawGraph(feature, corrFeature, anomalies) {
     let minY = 0;
     let data = [];
     let dataSeries = {
-        type: "line", markerSize: 5, showLine: false,
-        dataPoints: []
+        type: "line", markerSize: 5, showLine: false, dataPoints: []
     };
     let dataPoints = [];
     for (let i = 0; i < TestMap[feature].length; i++) {
@@ -168,14 +158,12 @@ function drawGraph(feature, corrFeature, anomalies) {
             y: y,
             markerColor: isAnomaly ? "#ff4da6" : "#0ff",
         });
-        if (maxX < x || isFirst) {
+        if (maxX < x || isFirst)
             maxX = x;
-        }
         if (minX > x || isFirst)
             minX = x;
-        if (maxY < y || isFirst) {
+        if (maxY < y || isFirst)
             maxY = y;
-        }
         if (minY > y || isFirst)
             minY = y;
         isFirst = false
@@ -184,7 +172,7 @@ function drawGraph(feature, corrFeature, anomalies) {
     dataSeries.dataPoints = dataPoints;
     data.push(dataSeries);
 
-    let chart = new CanvasJS.Chart("chartContainer",
+    let chart = new CanvasJS.Chart("anomaliesGraph",
         {
             zoomEnabled: true,
             theme: "dark2",
@@ -207,7 +195,5 @@ function drawGraph(feature, corrFeature, anomalies) {
                 maintainAspectRatio: false,
             }
         });
-
     chart.render();
-
 }
