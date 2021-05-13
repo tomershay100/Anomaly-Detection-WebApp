@@ -25,7 +25,8 @@ function saveTestFile(input) {
 }
 
 function submit() {
-    document.getElementById("anomaliesGraph").style.display = "none";
+    deleteFeaturesList();
+    hideGraph();
     if (TrainString === undefined || TestString === undefined) {
         document.getElementById('errorOnSubmit').innerHTML = "please upload both train and test files.";
         return;
@@ -42,7 +43,7 @@ function submit() {
     sleep(3000).then(() => {
         document.getElementById('errorOnSubmit').innerHTML = '';
     });
-    document.getElementById("loader").style.display = "inline-block";
+    showLoader();
 }
 
 function addFeature(feature) {
@@ -64,10 +65,26 @@ function showGraph() {
     document.getElementById("anomaliesGraph").style.display = "inline-block";
 }
 
+function hideGraph() {
+    document.getElementById("anomaliesGraph").style.display = "none";
+}
+
+function showLoader() {
+    document.getElementById("loader").style.display = "inline-block";
+}
+
 function hideLoader() {
     document.getElementById("loader").style.display = "none";
 }
 
 function currentFeature() {
     return document.getElementById("featuresList").value
+}
+
+function deleteFeaturesList() {
+    let featuresList = document.getElementById("featuresList");
+    let size = featuresList.length
+    for (let i = 0; i < size; i++) {
+        featuresList.remove(0);
+    }
 }
