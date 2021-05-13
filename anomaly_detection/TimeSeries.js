@@ -16,19 +16,19 @@ class TimeSeries {
         this._rowsSize = this._csvMap.size;
     }
 
-    GetColumn(key) {
+    getColumn(key) {
         return this._csvMap.has(key) ? this._csvMap[key] : [];
     }
 
-    GetColumnSize() {
+    getColumnSize() {
         return this._columnsSize;
     }
 
-    GetRowSize() {
+    getRowSize() {
         return this._rowsSize;
     }
 
-    GetFeatures() {
+    getFeatures() {
         return this._featuresList;
     }
 }
