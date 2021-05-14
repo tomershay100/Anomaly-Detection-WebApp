@@ -22,29 +22,29 @@ let id = 0;
 
 const {TimeSeries} = require('./TimeSeries');
 const express = require('express');
-const app = express();
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb'}));
+const backend_controller = express();
+backend_controller.use(express.json({limit: '50mb'}));
+backend_controller.use(express.urlencoded({limit: '50mb'}));
 if(process.cwd().split('\\')[-1] === 'controller')
     process.chdir('../');
 
-app.get('/', ((req, res) => {
+backend_controller.get('/', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.html');
 }))
 
-app.get('/frontend_controller.js', ((req, res) => {
+backend_controller.get('/frontend_controller.js', ((req, res) => {
     res.sendFile(process.cwd() + '/controller/frontend_controller.js');
 }))
 
-app.get('/style.css', ((req, res) => {
+backend_controller.get('/style.css', ((req, res) => {
     res.sendFile(process.cwd() + '/view/style.css');
 }))
 
-app.get('/index.js', ((req, res) => {
+backend_controller.get('/index.js', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.js');
 }))
 
-app.post('/api/model', ((req, res) => {
+backend_controller.post('/api/model', ((req, res) => {
     console.log(req.query.model_type);
     models[++id] = new Model(id, "pending");
     timesSeries[id] = new TimeSeries({"altitude_gps": [100, 110, 20], "heading_gps": [0.6, 0.59, 0.54] })
@@ -52,7 +52,7 @@ app.post('/api/model', ((req, res) => {
     res.send(timesSeries[id]);
 }))
 
-app.get('/api/model', ((req, res) => {
+backend_controller.get('/api/model', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         res.send(models[req.query.model_id].toJson());
         res.status(200).end()
@@ -61,7 +61,7 @@ app.get('/api/model', ((req, res) => {
     }
 }))
 
-app.delete('/api/model', ((req, res) => {
+backend_controller.delete('/api/model', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         delete models[req.query.model_id];// [].delete();
         res.status(200).end()
@@ -70,7 +70,7 @@ app.delete('/api/model', ((req, res) => {
     }
 }))
 
-app.post('/api/anomaly', ((req, res) => {
+backend_controller.post('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         res.status(200).end()
     } else {
@@ -78,7 +78,7 @@ app.post('/api/anomaly', ((req, res) => {
     }
 }))
 
-app.get('/api/anomaly', ((req, res) => {
+backend_controller.get('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         if (models[req.query.model_id].status === "pending") {
             models[req.query.model_id].status = "ready";
@@ -96,4 +96,4 @@ app.get('/api/anomaly', ((req, res) => {
     }
 }))
 
-app.listen(8080);
+backend_controller.listen(8080);
