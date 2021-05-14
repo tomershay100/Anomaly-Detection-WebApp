@@ -24,7 +24,6 @@ let id = 0;
 
 const express = require('express');
 const {AnomalyManager} = require("../model/anomaly_manager");
-const {TimeSeries} = require("../model/anomaly_detection/TimeSeries");
 const backend_controller = express();
 backend_controller.use(express.json({limit: '50mb'}));
 backend_controller.use(express.urlencoded({limit: '50mb'}));
@@ -53,9 +52,6 @@ backend_controller.get('/index.js', ((req, res) => {
 
 //Train POST
 backend_controller.post('/api/model', ((req, res) => {
-    if (models.size === 1){
-        deleteModel(req.query.model_id);
-    }
     models[++id] = new Model(id, "pending");
     anomalyManagers[id] = new AnomalyManager();
     anomalyManagers[id].uploadTrain(req.body["train_data"]);
@@ -83,12 +79,10 @@ backend_controller.get('/api/model', ((req, res) => {
 }))
 
 backend_controller.delete('/api/model', ((req, res) => {
-    console.log("delete1")
     res.status(deleteModel(req.query.model_id)).end();
 }))
 
 function deleteModel(modelId){
-    console.log("delete")
     if (models.hasOwnProperty(modelId)) {
         delete models[modelId];
         anomalyManagers[modelId].deleteTrain();
