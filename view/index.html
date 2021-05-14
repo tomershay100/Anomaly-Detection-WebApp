@@ -41,37 +41,49 @@
 <div class="split up right">
     <h2>Features List</h2>
     <form>
-        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="23"
+        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="14"
                                                   onchange="selectFeature()"></select>
     </form>
 </div>
 
 
 <div class="split down left">
-    <label for="trainFile" class="custom-file-upload boxGlow">
-        <i class="fa fa-cloud-upload"></i> Train Upload
-    </label>
-    <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
-    <p id="trainFileName" style="display:inline"></p>
-    <label for="testFile" class="custom-file-upload boxGlow">
-        <i class="fa fa-cloud-upload"></i> Test Upload
-    </label>
-    <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
-    <p id="testFileName" style="display:inline"></p>
-    <br> <br> <br>
-    <div>
-        <input type="radio" id="regression" name="modelType" value="regression" checked="checked">
-        <label for="regression">linear regression</label><br>
-        <input type="radio" id="hybrid" name="modelType" value="hybrid">
-        <label for="hybrid">hybrid</label><br>
+    <div class="split leftHalf">
+        <label for="trainFile" class="custom-file-upload learn-more">
+            <i class="fa fa-cloud-upload"></i>
+            <p id="trainFileName" style="display:inline">Train Upload</p>
+        </label>
+        <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
+
+        <hr style="height:3pt; visibility:hidden;" />
+
+        <label for="testFile" class="custom-file-upload learn-more">
+            <i class="fa fa-cloud-upload"></i>
+            <p id="testFileName" style="display:inline">Test Upload</p>
+        </label>
+        <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
     </div>
+    <div class="split rightHalf" style="display: inline">
+        <label class="rad-label">
+            <input class="rad-input" type="radio" id="regression" name="modelType" value="regression" checked="checked">
+            <div class="rad-design"></div>
+            <div class="rad-text" for="regression">linear regression</div>
+        </label>
+        <label class="rad-label">
+            <input class="rad-input" type="radio" id="hybrid" name="modelType" value="regression">
+            <div class="rad-design"></div>
+            <div class="rad-text" for="hybrid">hybrid</div>
+        </label>
+    </div>
+
 </div>
 <div class="split down right">
-    <label for="submit" class="custom-file-upload boxGlow">
+    <br><br>
+    <label for="submit" class="custom-file-upload learn-more">
         <i class="fa fa-cloud-upload"></i> Submit
     </label>
     <input id="submit" type="submit" onclick="submit()" style="display: none">
-    <br>
+    <br><br><br>
     <p id="errorOnSubmit"></p>
 </div>
 </body>
