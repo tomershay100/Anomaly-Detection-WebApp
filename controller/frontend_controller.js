@@ -58,7 +58,7 @@ function parseCsv(csvStringFile) {
 
 
 function submitPressed(trainJson, testJson, modelType) {
-    if ((typeof ModelID).toString() !== 'undefined') {
+    if (typeof ModelID !== 'undefined') {
         let httpRequest;
         httpRequest = new XMLHttpRequest();
         httpRequest.open("DELETE", "/api/model" + "?model_id=" + ModelID, true);
