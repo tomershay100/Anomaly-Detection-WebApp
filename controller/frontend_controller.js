@@ -108,10 +108,10 @@ function onLoadFeedback() {
     }
     showGraph();
     hideLoader();
-    selectFeature();
+    analyzedSelection();
 }
 
-function selectFeature() {
+function analyzedSelection() {
     let feature = currentFeature();
     let corrFeature;
     let anomalies;

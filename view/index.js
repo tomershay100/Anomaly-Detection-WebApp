@@ -61,6 +61,10 @@ function FeatureSelection(feature) {
     }
 }
 
+function selectedFeature(){
+    analyzedSelection()
+}
+
 function showGraph() {
     document.getElementById("anomaliesGraph").style.display = "inline-block";
 }
