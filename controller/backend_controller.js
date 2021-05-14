@@ -1,4 +1,3 @@
-
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -29,6 +28,11 @@ const backend_controller = express();
 backend_controller.use(express.json({limit: '50mb'}));
 backend_controller.use(express.urlencoded({limit: '50mb'}));
 if(process.cwd().split('\\')[-1] === 'controller')
+const app = express();
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
+let cwdProc = process.cwd().split('\\');
+if(cwdProc[cwdProc.length-1] === 'controller')
     process.chdir('../');
 
 backend_controller.get('/', ((req, res) => {
@@ -47,12 +51,27 @@ backend_controller.get('/index.js', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.js');
 }))
 
+//Train POST
 backend_controller.post('/api/model', ((req, res) => {
+    if (models.size === 1){
+        deleteModel(req.query.model_id);
+    }
     models[++id] = new Model(id, "pending");
     anomalyManagers[id] = new AnomalyManager();
     anomalyManagers[id].uploadTrain(req.body["train_data"]);
     res.send(models[id].toJson());
 }))
+
+//Test POST
+backend_controller.post('/api/anomaly', ((req, res) => {
+    if (models.hasOwnProperty(req.query.model_id)){
+        anomalyManagers[req.query.model_id].uploadTest(req.body["predict_data"]);
+        res.status(200).end();
+    } else {
+        res.status(404).end();
+    }
+}))
+
 
 backend_controller.get('/api/model', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
