@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="">
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="frontend_controller.js"></script>
+<script src="index.js"></script>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anomaly Detection WebApp</title>
+</head>
+<body>
+
+<div class="split up left">
+    <div id="anomaliesGraph"></div>
+    <section>
+        <div id="loader" class="loader" style="display: none">
+            <span style="--i:1;"></span>
+            <span style="--i:2;"></span>
+            <span style="--i:3;"></span>
+            <span style="--i:4;"></span>
+            <span style="--i:5;"></span>
+            <span style="--i:6;"></span>
+            <span style="--i:7;"></span>
+            <span style="--i:8;"></span>
+            <span style="--i:9;"></span>
+            <span style="--i:10;"></span>
+            <span style="--i:11;"></span>
+            <span style="--i:12;"></span>
+            <span style="--i:13;"></span>
+            <span style="--i:14;"></span>
+            <span style="--i:15;"></span>
+            <span style="--i:16;"></span>
+            <span style="--i:17;"></span>
+            <span style="--i:18;"></span>
+            <span style="--i:19;"></span>
+            <span style="--i:20;"></span>
+        </div>
+    </section>
+</div>
+<div class="split up right">
+    <h2>Features List</h2>
+    <form>
+        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="14"
+                                                  onchange="selectFeature()"></select>
+    </form>
+</div>
+
+
+<div class="split down left">
+    <div class="split leftHalf">
+        <label for="trainFile" class="custom-file-upload learn-more">
+            <i class="fa fa-cloud-upload"></i>
+            <p id="trainFileName" style="display:inline">Train Upload</p>
+        </label>
+        <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
+
+        <hr style="height:3pt; visibility:hidden;" />
+
+        <label for="testFile" class="custom-file-upload learn-more">
+            <i class="fa fa-cloud-upload"></i>
+            <p id="testFileName" style="display:inline">Test Upload</p>
+        </label>
+        <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
+    </div>
+    <div class="split rightHalf" style="display: inline">
+        <label class="rad-label">
+            <input class="rad-input" type="radio" id="regression" name="modelType" value="regression" checked="checked">
+            <div class="rad-design"></div>
+            <div class="rad-text" for="regression">linear regression</div>
+        </label>
+        <label class="rad-label">
+            <input class="rad-input" type="radio" id="hybrid" name="modelType" value="regression">
+            <div class="rad-design"></div>
+            <div class="rad-text" for="hybrid">hybrid</div>
+        </label>
+    </div>
+
+</div>
+<div class="split down right">
+    <br><br>
+    <label for="submit" class="custom-file-upload learn-more">
+        <i class="fa fa-cloud-upload"></i> Submit
+    </label>
+    <input id="submit" type="submit" onclick="submit()" style="display: none">
+    <br><br><br>
+    <p id="errorOnSubmit"></p>
+</div>
+</body>
+</html>

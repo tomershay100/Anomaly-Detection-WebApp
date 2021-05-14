@@ -25,7 +25,8 @@ const express = require('express');
 const app = express();
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
-process.chdir('../');
+if(process.cwd().split('\\')[-1] === 'controller')
+    process.chdir('../');
 
 app.get('/', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.html');
@@ -35,13 +36,17 @@ app.get('/frontend_controller.js', ((req, res) => {
     res.sendFile(process.cwd() + '/controller/frontend_controller.js');
 }))
 
-app.get('/index.css', ((req, res) => {
-    res.sendFile(process.cwd() + '/view/index.css');
+app.get('/style.css', ((req, res) => {
+    res.sendFile(process.cwd() + '/view/style.css');
+}))
+
+app.get('/index.js', ((req, res) => {
+    res.sendFile(process.cwd() + '/view/index.js');
 }))
 
 app.post('/api/model', ((req, res) => {
     console.log(req.query.model_type);
-    models[++id] = new Model(id, id % 2 === 0 ? "ready" : "pending");
+    models[++id] = new Model(id, "pending");
     timesSeries[id] = new TimeSeries({"altitude_gps": [100, 110, 20], "heading_gps": [0.6, 0.59, 0.54] })
     //res.send(models[id].toJson());
     res.send(timesSeries[id]);
@@ -53,7 +58,6 @@ app.get('/api/model', ((req, res) => {
         res.status(200).end()
     } else {
         res.status(404).end()
-
     }
 }))
 
@@ -66,24 +70,8 @@ app.delete('/api/model', ((req, res) => {
     }
 }))
 
-app.get('/api/models', ((req, res) => {
-    var arr = [];
-
-    for (var key in models) {
-        if (models.hasOwnProperty(key)) {
-            arr.push(models[key]);
-        }
-    }
-    res.send(arr);
-}))
-
 app.post('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
-        if(models[req.query.model_id].status === "pending")
-            res.redirect("/api/model?model_id=" + req.query.model_id)
-            //res.redirect("https://google.com")
-        else
-            res.send({ anomalies:{ col_name_1: [[1,8]], col_name_2: [[2,3], [12,16]]}, reason: "Any"});
         res.status(200).end()
     } else {
         res.status(404).end()
@@ -92,10 +80,17 @@ app.post('/api/anomaly', ((req, res) => {
 
 app.get('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
-        sleep(3000).then(() => {
-            res.send({feature: req.query.feature + "1", anomalies: [[2, 3], [50, 70]]});
+        if (models[req.query.model_id].status === "pending") {
+            models[req.query.model_id].status = "ready";
+            sleep(3000).then(() => {
+                res.send({feature: "airspeed-kt" /*req.query.feature + "1"*/, anomalies: [[2, 3], [50, 300]]});
+                res.status(200).end();
+            });
+        }
+        else {
+            res.send({feature: "airspeed-kt" /*req.query.feature + "1"*/, anomalies: [[2, 3], [50, 70]]});
             res.status(200).end();
-        });
+        }
     } else {
         res.status(404).end()
     }
