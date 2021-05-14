@@ -20,8 +20,8 @@ let models = {};
 let timesSeries = {};
 let id = 0;
 
-const {TimeSeries} = require('./TimeSeries');
 const express = require('express');
+const {TimeSeries} = require("../model/anomaly_detection/TimeSeries");
 const backend_controller = express();
 backend_controller.use(express.json({limit: '50mb'}));
 backend_controller.use(express.urlencoded({limit: '50mb'}));
@@ -47,9 +47,9 @@ backend_controller.get('/index.js', ((req, res) => {
 backend_controller.post('/api/model', ((req, res) => {
     console.log(req.query.model_type);
     models[++id] = new Model(id, "pending");
-    timesSeries[id] = new TimeSeries({"altitude_gps": [100, 110, 20], "heading_gps": [0.6, 0.59, 0.54] })
-    //res.send(models[id].toJson());
-    res.send(timesSeries[id]);
+    //timesSeries[id] = new TimeSeries(JSON.parse({"altitude_gps": [100, 110, 20], "heading_gps": [0.6, 0.59, 0.54] }))
+    timesSeries[id] = new TimeSeries(req.body["train_data"]);
+    res.send(models[id].toJson())
 }))
 
 backend_controller.get('/api/model', ((req, res) => {

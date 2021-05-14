@@ -2,17 +2,9 @@ class TimeSeries {
     constructor(DATAJson) {
         this._csvMap = new Map();
         this._featuresList = [];
-        this._columnsSize = 0;
-        for (let value in DATAJson) {
-            this._csvMap[value] = DATAJson[value];
-            this._featuresList.push(value)
-            if (this._columnsSize === 0) {
-                for (var f in this._csvMap[value]) {
-                    this._columnsSize++;
-                }
-            }
-
-        }
+        this._csvMap = JSON.parse(JSON.stringify(DATAJson))
+        this._featuresList = Object.keys(this._csvMap);
+        this._columnsSize = this._csvMap[this._featuresList[0]].length;
         this._rowsSize = this._csvMap.size;
     }
 
