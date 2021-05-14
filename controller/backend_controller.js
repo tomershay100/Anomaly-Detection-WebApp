@@ -17,7 +17,8 @@ class Model {
 }
 
 let models = {};
-let timesSeries = {};
+let trainTimesSeries = {};
+let testTimeSeries = {};
 let id = 0;
 
 const express = require('express');
@@ -45,10 +46,8 @@ backend_controller.get('/index.js', ((req, res) => {
 }))
 
 backend_controller.post('/api/model', ((req, res) => {
-    console.log(req.query.model_type);
     models[++id] = new Model(id, "pending");
-    //timesSeries[id] = new TimeSeries(JSON.parse({"altitude_gps": [100, 110, 20], "heading_gps": [0.6, 0.59, 0.54] }))
-    timesSeries[id] = new TimeSeries(req.body["train_data"]);
+    trainTimesSeries[id] = new TimeSeries(req.body["train_data"]);
     res.send(models[id].toJson())
 }))
 
@@ -71,7 +70,8 @@ backend_controller.delete('/api/model', ((req, res) => {
 }))
 
 backend_controller.post('/api/anomaly', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)) {
+    if (models.hasOwnProperty(req.query.model_id)){
+        testTimeSeries[req.query.model_id] = new TimeSeries(req.body["predict_data"]);
         res.status(200).end()
     } else {
         res.status(404).end()
