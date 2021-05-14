@@ -56,6 +56,22 @@ function parseCsv(csvStringFile) {
     return map;
 }
 
+
+function submitPressed(trainJson, testJson, modelType) {
+    if (typeof ModelID !== 'undefined') {
+        let httpDeleteRequest;
+        httpDeleteRequest = new XMLHttpRequest();
+        httpDeleteRequest.open("DELETE", "http://localhost:8080/api/model?model_id=" + ModelID, true);
+        httpDeleteRequest.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                sendDataToServer(trainJson, testJson, modelType);
+            }
+        };
+    } else {
+        sendDataToServer(trainJson, testJson, modelType)
+    }
+}
+
 function sendDataToServer(trainJson, testJson, modelType) {
     let httpRequest;
     httpRequest = new XMLHttpRequest();
@@ -99,6 +115,7 @@ function onLoadTest() {
 }
 
 function onLoadFeedback() {
+    deleteFeaturesList();
     let isFirst = true;
     for (const feature of Features) {
         addFeature(feature)
@@ -108,10 +125,10 @@ function onLoadFeedback() {
     }
     showGraph();
     hideLoader();
-    selectFeature();
+    analyzedSelection();
 }
 
-function selectFeature() {
+function analyzedSelection() {
     let feature = currentFeature();
     let corrFeature;
     let anomalies;
