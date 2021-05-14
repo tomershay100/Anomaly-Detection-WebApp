@@ -25,7 +25,6 @@ function saveTestFile(input) {
 }
 
 function submit() {
-    deleteFeaturesList();
     hideGraph();
     if (TrainString === undefined || TestString === undefined) {
         document.getElementById('errorOnSubmit').innerHTML = "please upload both train and test files.";
@@ -38,7 +37,7 @@ function submit() {
     ModelType = document.getElementById('regression').checked ? "regression" : "hybrid";
     TrainMap = parseCsv(TrainString);
     TestMap = parseCsv(TestString);
-    sendDataToServer({train_data: TrainMap}, {predict_data: TestMap}, ModelType)
+    submitPressed({train_data: TrainMap}, {predict_data: TestMap}, ModelType)
     document.getElementById('errorOnSubmit').innerHTML = "files uploaded successfully";
     sleep(3000).then(() => {
         document.getElementById('errorOnSubmit').innerHTML = '';
@@ -59,6 +58,10 @@ function FeatureSelection(feature) {
         if(option.text === feature)
             option.selected = true;
     }
+}
+
+function selectedFeature(){
+    analyzedSelection()
 }
 
 function showGraph() {

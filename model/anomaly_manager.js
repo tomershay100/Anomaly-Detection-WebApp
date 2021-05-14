@@ -4,19 +4,19 @@ const {SimpleAnomalyDetector} = require('./anomaly_detection/SimpleAnomalyDetect
 
 class Anomaly_manager{
     constructor() {
-        this._detector = SimpleAnomalyDetector(0)
-        this._allDataPoints = []
-        this._anomalyDataPoints = []
-        this._train = null
-        this._test = null
+        this._detector = SimpleAnomalyDetector(0);
+        this._allDataPoints = [];
+        this._anomalyDataPoints = [];
+        this._train = null;
+        this._test = null;
     }
 
     uploadTrain(trainJson){
-        this._train = new TimeSeries(trainJson)
+        this._train = new TimeSeries(trainJson);
     }
 
     uploadTest(testJson){
-        this._test = new TimeSeries(testJson)
+        this._test = new TimeSeries(testJson);
     }
 
     learn(){
@@ -24,7 +24,7 @@ class Anomaly_manager{
     }
 
     detect(){
-        this._detector.detect(this._test)
+        this._detector.detect(this._test);
     }
 
     mostCorrelative(column){

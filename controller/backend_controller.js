@@ -1,3 +1,4 @@
+
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -17,8 +18,9 @@ class Model {
 }
 
 let models = {};
-let trainTimesSeries = {};
-let testTimeSeries = {};
+let anomalyManagers = {};
+// let trainTimesSeries = {};
+// let testTimeSeries = {};
 let id = 0;
 
 const express = require('express');
@@ -47,36 +49,35 @@ backend_controller.get('/index.js', ((req, res) => {
 
 backend_controller.post('/api/model', ((req, res) => {
     models[++id] = new Model(id, "pending");
-    trainTimesSeries[id] = new TimeSeries(req.body["train_data"]);
-    res.send(models[id].toJson())
+    anomalyManagers[id] = new AnomalyManager();
+    anomalyManagers[id].uploadTrain(req.body["train_data"]);
+    res.send(models[id].toJson());
 }))
 
 backend_controller.get('/api/model', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         res.send(models[req.query.model_id].toJson());
-        res.status(200).end()
+        res.status(200).end();
     } else {
-        res.status(404).end()
+        res.status(404).end();
     }
 }))
 
 backend_controller.delete('/api/model', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)) {
-        delete models[req.query.model_id];// [].delete();
-        res.status(200).end()
-    } else {
-        res.status(404).end()
-    }
+    res.status(deleteModel(req.query.model_id)).end();
 }))
 
-backend_controller.post('/api/anomaly', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)){
-        testTimeSeries[req.query.model_id] = new TimeSeries(req.body["predict_data"]);
-        res.status(200).end()
+function deleteModel(modelId){
+    if (models.hasOwnProperty(modelId)) {
+        delete models[modelId];
+        anomalyManagers[modelId].deleteTrain();
+        anomalyManagers[modelId].deleteTest();
+        return 200;
     } else {
-        res.status(404).end()
+        return 404;
     }
-}))
+}
+
 
 backend_controller.get('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
