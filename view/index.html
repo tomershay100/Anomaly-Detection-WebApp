@@ -40,7 +40,29 @@
 </div>
 <div class="left up">
     <form>
-        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="13"
+        <label for="featuresList"></label>
+        <style>
+            /* width */
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            /* Track */
+            ::-webkit-scrollbar-track {
+                background: #2b2b2b;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: #ff1493;
+            }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #ff4da6;
+            }
+        </style>
+        <select class="list" id="featuresList" name="featuresList" size="13"
                                                   onchange="selectFeature()"></select>
     </form>
 </div>
