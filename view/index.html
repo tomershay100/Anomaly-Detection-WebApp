@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="split up left">
+<div class="right">
     <div id="anomaliesGraph"></div>
     <section>
         <div id="loader" class="loader" style="display: none">
@@ -38,34 +38,31 @@
         </div>
     </section>
 </div>
-<div class="split up right">
-    <h2>Features List</h2>
+<div class="left up">
     <form>
-        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="14"
+        <label for="featuresList"></label><select class="list" id="featuresList" name="featuresList" size="13"
                                                   onchange="selectFeature()"></select>
     </form>
 </div>
+<div class="left down">
+    <label for="trainFile" class="custom-file-upload learn-more">
+        <i class="fa fa-cloud-upload"></i>
+        <p id="trainFileName" style="display:inline">Train Upload</p>
+    </label>
+    <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
 
+    <hr style="height:3pt; visibility:hidden;"/>
 
-<div class="split down left">
-    <div class="split leftHalf">
-        <label for="trainFile" class="custom-file-upload learn-more">
-            <i class="fa fa-cloud-upload"></i>
-            <p id="trainFileName" style="display:inline">Train Upload</p>
-        </label>
-        <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
+    <label for="testFile" class="custom-file-upload learn-more">
+        <i class="fa fa-cloud-upload"></i>
+        <p id="testFileName" style="display:inline">Test Upload</p>
+    </label>
+    <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
 
-        <hr style="height:3pt; visibility:hidden;" />
-
-        <label for="testFile" class="custom-file-upload learn-more">
-            <i class="fa fa-cloud-upload"></i>
-            <p id="testFileName" style="display:inline">Test Upload</p>
-        </label>
-        <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
-    </div>
-    <div class="split rightHalf" style="display: inline">
+    <div class="" style="display: inline">
         <label class="rad-label">
-            <input class="rad-input" type="radio" id="regression" name="modelType" value="regression" checked="checked">
+            <input class="rad-input" type="radio" id="regression" name="modelType" value="regression"
+                   checked="checked">
             <div class="rad-design"></div>
             <div class="rad-text" for="regression">linear regression</div>
         </label>
@@ -76,8 +73,6 @@
         </label>
     </div>
 
-</div>
-<div class="split down right">
     <br><br>
     <label for="submit" class="custom-file-upload learn-more">
         <i class="fa fa-cloud-upload"></i> Submit
@@ -86,5 +81,7 @@
     <br><br><br>
     <p id="errorOnSubmit"></p>
 </div>
+
+
 </body>
 </html>
