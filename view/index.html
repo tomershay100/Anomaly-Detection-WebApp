@@ -10,7 +10,6 @@
     <title>Anomaly Detection WebApp</title>
 </head>
 <body>
-
 <div class="right">
     <div id="anomaliesGraph"></div>
     <section>
@@ -37,6 +36,7 @@
             <span style="--i:20;"></span>
         </div>
     </section>
+
 </div>
 <div class="left up">
     <form>
@@ -83,8 +83,8 @@
         <p id="testFileName" style="display:inline">Test Upload</p>
     </label>
     <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
-
     <div class="" style="display: inline">
+
         <label class="rad-label">
             <input class="rad-input" type="radio" id="regression" name="modelType" value="regression"
                    checked="checked">
@@ -106,7 +106,5 @@
     <br><br><br>
     <p id="errorOnSubmit"></p>
 </div>
-
-
 </body>
 </html>

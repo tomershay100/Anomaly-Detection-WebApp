@@ -60,8 +60,10 @@ app.get('/api/model', ((req, res) => {
 }))
 
 app.delete('/api/model', ((req, res) => {
+    console.log("delete")
     if (models.hasOwnProperty(req.query.model_id)) {
-        delete models[req.query.model_id];// [].delete();
+        delete models[req.query.model_id];
+        console.log("delete")
         res.status(200).end()
     } else {
         res.status(404).end()
