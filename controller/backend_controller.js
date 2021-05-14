@@ -23,7 +23,8 @@ const express = require('express');
 const app = express();
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
-if(process.cwd().split('\\')[-1] === 'controller')
+let cwdProc = process.cwd().split('\\');
+if(cwdProc[cwdProc.length-1] === 'controller')
     process.chdir('../');
 
 app.get('/', ((req, res) => {
