@@ -54,7 +54,7 @@ SimpleAnomalyDetector.prototype.createCf = function (timeSeries) {
             }
         }
         if (f2 !== "") {
-            this._cf.push(CorrelatedFeatures.constructor(f1, f2, correlation, 0));
+            this._cf.push(new CorrelatedFeatures(f1, f2, correlation, 0));
         }
     }
 }
@@ -63,7 +63,7 @@ SimpleAnomalyDetector.prototype.createForm = function (ts) {
     for (let i = 0; i < this._cf.count; i++) {
         let array = Point[ts.getRowSize()];
         for (let j = 0; j < ts.getRowSize(); j++) {
-            array[j] = Point.constructor(ts.getColumn(this._cf[i]._feature1)[j],
+            array[j] = new Point(ts.getColumn(this._cf[i]._feature1)[j],
                 ts.getColumn(this._cf[i]._feature2)[j]);
         }
         //this._cf[i]._threshold = 0;
@@ -94,7 +94,7 @@ SimpleAnomalyDetector.prototype.findThreshold = function (array, s) {
 SimpleAnomalyDetector.prototype.detect = function (ts) {
     for (let j = 0; j < this._cf.count; j++) {
         for (let i = 0; i < ts.getRowSize(); i++) {
-            let p = Point.constructor(ts.getColumn(this._cf[j]._feature1)[i], ts.getColumn(this._cf[j]._feature2)[i])
+            let p = new Point(ts.getColumn(this._cf[j]._feature1)[i], ts.getColumn(this._cf[j]._feature2)[i])
             let devAbs = this.devFromForm(p, this._cf[j]);
             if (this._cf[j]._threshold * 1.1 < devAbs) {
                 this._cf[j].this._anomalies.push(p);
@@ -104,3 +104,5 @@ SimpleAnomalyDetector.prototype.detect = function (ts) {
         }
     }
 }
+
+module.exports = {SimpleAnomalyDetector};

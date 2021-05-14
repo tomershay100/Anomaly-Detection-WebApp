@@ -37,7 +37,7 @@ class Circle {
 
     static fromJson(json) {
         let map = JSON.parse(JSON.stringify(json));
-        return Circle.constructor(map["x"], map["y"], map["r"]);
+        return new Circle(map["x"], map["y"], map["r"]);
     }
 }
 

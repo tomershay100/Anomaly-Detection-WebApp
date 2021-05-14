@@ -2,9 +2,9 @@ const {Line} = require("./anomaly_detection/anomaly_detection_util");
 const {TimeSeries} = require("./anomaly_detection/TimeSeries");
 const {SimpleAnomalyDetector} = require('./anomaly_detection/SimpleAnomalyDetector');
 
-class Anomaly_manager{
+class AnomalyManager{
     constructor() {
-        this._detector = SimpleAnomalyDetector(0);
+        this._detector = SimpleAnomalyDetector.prototype;
         this._allDataPoints = [];
         this._anomalyDataPoints = [];
         this._train = null;
@@ -18,6 +18,15 @@ class Anomaly_manager{
     uploadTest(testJson){
         this._test = new TimeSeries(testJson);
     }
+
+    deleteTrain(){
+        delete this._train;
+    }
+
+    deleteTest(){
+        delete this._test;
+    }
+
 
     learn(){
         this._detector.learnNormal(this._tarin);
@@ -75,5 +84,6 @@ class Anomaly_manager{
             }
         }
     }
-
 }
+module.exports = {AnomalyManager};
+
