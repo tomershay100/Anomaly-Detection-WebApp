@@ -28,6 +28,11 @@ function SimpleAnomalyDetector(threshold) {
     this._cf = [];
 }
 
+SimpleAnomalyDetector.prototype.learnNormal = function (ts) {
+    this.createCf(ts);
+    this.createForm(ts);
+}
+
 SimpleAnomalyDetector.prototype.createCf = function (timeSeries) {
     let biggestPearson;
     for (let i = 0; i < timeSeries.getColumnSize(); i++) {
@@ -49,9 +54,7 @@ SimpleAnomalyDetector.prototype.createCf = function (timeSeries) {
             }
         }
         if (f2 !== "") {
-            // let allPoints = [];
-            //TODO _threshold same ?
-            this._cf.push(CorrelatedFeatures.constructor(f1, f2, correlation, this._threshold));
+            this._cf.push(CorrelatedFeatures.constructor(f1, f2, correlation, 0));
         }
     }
 }
@@ -63,12 +66,9 @@ SimpleAnomalyDetector.prototype.createForm = function (ts) {
             array[j] = Point.constructor(ts.getColumn(this._cf[i]._feature1)[j],
                 ts.getColumn(this._cf[i]._feature2)[j]);
         }
-        let line = this.createCorrelativeForm(array);
-        this._cf[i] = CorrelatedFeatures.constructor(this._cf[i]._feature1, this._cf[i]._feature2, this._cf[i]._correlation, 0);
-        this._cf[i]._line = line;
-        let th = this.findThreshold(array, this._cf[i]);
-        this._cf[i] = CorrelatedFeatures.constructor(this._cf[i]._feature1, this._cf[i]._feature2, this._cf[i]._correlation, th);
-        this._cf[i]._line = line;
+        //this._cf[i]._threshold = 0;
+        this._cf[i]._line = this.createCorrelativeForm(array);
+        this._cf[i]._threshold = this.findThreshold(array, this._cf[i]);
     }
 }
 
