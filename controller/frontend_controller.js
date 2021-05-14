@@ -58,14 +58,14 @@ function parseCsv(csvStringFile) {
 
 
 function submitPressed(trainJson, testJson, modelType) {
-    if (typeof ModelID !== 'undefined') {
-        let httpDeleteRequest;
-        httpDeleteRequest = new XMLHttpRequest();
-        httpDeleteRequest.open("DELETE", "http://localhost:8080/api/model?model_id=" + ModelID, true);
-        httpDeleteRequest.onload = function () {
-            if (this.readyState === 4 && this.status === 200) {
+    if ((typeof ModelID).toString() !== 'undefined') {
+        let httpRequest;
+        httpRequest = new XMLHttpRequest();
+        httpRequest.open("DELETE", "/api/model" + "?model_id=" + ModelID, true);
+        httpRequest.send();
+        httpRequest.onload = function () {
+            if (this.readyState === 4 && this.status === 200)
                 sendDataToServer(trainJson, testJson, modelType);
-            }
         };
     } else {
         sendDataToServer(trainJson, testJson, modelType)
