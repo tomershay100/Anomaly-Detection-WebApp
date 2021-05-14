@@ -2,11 +2,13 @@ let TrainString;
 let TestString;
 let ModelType;
 let Features;
+let TrainMap;
+let TestMap;
+let ModelID;
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
-
 
 function parseCsv(csvStringFile) {
     let map = {};
@@ -55,107 +57,143 @@ function parseCsv(csvStringFile) {
 }
 
 function sendDataToServer(trainJson, testJson, modelType) {
-    let xhttp;
-    xhttp = new XMLHttpRequest();
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
 
-    xhttp.open("POST", "/api/model" + "?model_type=" + modelType, true);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify(trainJson));
-    document.getElementById("listOfFiles").innerHTML =
-        "loading..";
-    xhttp.onload = function () {
-
-//        console.log(/*this.readyState === 4 && */this.status === 200);
-
+    httpRequest.open("POST", "/api/model" + "?model_type=" + modelType, true);
+    httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    httpRequest.send(JSON.stringify(trainJson));
+    httpRequest.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            onLoadTrain(xhttp, testJson);
+            ModelID = JSON.parse(httpRequest.response)["model_id"];
+            onLoadTrain(testJson);
         }
     };
 }
 
-function onLoadTrain(xhttp, testJson) {
-    let modelID = JSON.parse(xhttp.response)["model_id"];
-    console.log(xhttp.response);
+function onLoadTrain(testJson) {
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
 
-    let xhttp1;
-    xhttp1 = new XMLHttpRequest();
+    httpRequest.open("POST", "/api/anomaly" + "?model_id=" + ModelID, true);
+    httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    httpRequest.send(JSON.stringify(testJson));
 
-    xhttp1.open("POST", "/api/anomaly" + "?model_id=" + modelID, true);
-    xhttp1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp1.send(JSON.stringify(testJson));
-
-    xhttp1.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            onLoadTest(modelID)
-        }
+    httpRequest.onload = function () {
+        if (this.readyState === 4 && this.status === 200)
+            onLoadTest();
     };
 }
 
-function onLoadTest(modelID) {
-    let xhttp2;
-    xhttp2 = new XMLHttpRequest();
+function onLoadTest() {
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
 
-    xhttp2.open("GET", "/api/anomaly" + "?model_id=" + modelID, true);
-    xhttp2.send();
+    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID, true);
+    httpRequest.send();
 
-    xhttp2.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
+    httpRequest.onload = function () {
+        if (this.readyState === 4 && this.status === 200)
             onLoadFeedback();
-        }
     };
 }
 
 function onLoadFeedback() {
-    let x = document.getElementById("lstValue");
+    let isFirst = true;
     for (const feature of Features) {
-        let option = document.createElement("option");
-        option.text = feature;
-        x.add(option);
+        addFeature(feature)
+        if (isFirst)
+            FeatureSelection(feature);
+        isFirst = false;
+    }
+    showGraph();
+    hideLoader();
+    selectFeature();
+}
+
+function selectFeature() {
+    let feature = currentFeature();
+    let corrFeature;
+    let anomalies;
+
+    let httpRequest;
+    httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&?feature=" + feature, true);
+    httpRequest.send();
+
+    httpRequest.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            anomalies = JSON.parse(httpRequest.response)["anomalies"];
+            corrFeature = JSON.parse(httpRequest.response)["feature"];
+            drawGraph(feature, corrFeature, anomalies);
+        }
+    };
+}
+
+function drawGraph(feature, corrFeature, anomalies) {
+    let maxX = 0;
+    let minX = 0;
+    let isFirst = true;
+    let maxY = 0;
+    let minY = 0;
+    let data = [];
+    let dataSeries = {
+        type: "line", markerSize: 5, showLine: false, dataPoints: []
+    };
+    let dataPoints = [];
+    for (let i = 0; i < TestMap[feature].length; i++) {
+        let isAnomaly = false;
+        for (const array of anomalies) {
+            if (i >= array[0] && i < array[1]) {
+                isAnomaly = true;
+                break;
+            }
+        }
+
+        let y = TestMap[corrFeature][i];
+        let x = TestMap[feature][i];
+
+        dataPoints.push({
+            x: x,
+            y: y,
+            markerColor: isAnomaly ? "#ff4da6" : "#0ff",
+        });
+        if (maxX < x || isFirst)
+            maxX = x;
+        if (minX > x || isFirst)
+            minX = x;
+        if (maxY < y || isFirst)
+            maxY = y;
+        if (minY > y || isFirst)
+            minY = y;
+        isFirst = false
     }
 
-    document.getElementById("listOfFiles").innerHTML =
-        "YAY";
-}
+    dataSeries.dataPoints = dataPoints;
+    data.push(dataSeries);
 
-function syncList() {
-    setTimeout(updateList, 0);
-}
-
-function updateList() {
-    //while (true) {
-    //sleep(1000).then(r => {
-
-    //});
-
-    // }
-}
-
-var lastAddedIndex = 0;
-
-function addValue(value) {
-    //alert("Please select any item from the ListBox");
-
-    //var v = document.form1.txtValue.value;
-    //document.getElementById("tomer").innerHTML=v;
-    // get the TextBox Value and assign it into the variable
-    document.form1.lstValue.options[lastAddedIndex++] = new Option(value, value);
-    return true;
-}
-
-function deleteValue() {
-    var s = 1;
-    var Index;
-    if (document.form1.lstValue.selectedIndex === -1) {
-        alert("Please select any item from the ListBox");
-        return true;
-    }
-    while (s > 0) {
-        Index = document.form1.lstValue.selectedIndex;
-        if (Index >= 0) {
-            document.form1.lstValue.options[Index] = null;
-            --lastAddedIndex;
-        } else
-            document.s = 0;
-    }
-    return true;
+    let chart = new CanvasJS.Chart("anomaliesGraph",
+        {
+            zoomEnabled: true,
+            theme: "dark2",
+            title: {
+                text: "Anomalies Graph"
+            },
+            axisX: {
+                title: feature,
+                viewportMinimum: minX,
+                viewportMaximum: maxX
+            },
+            axisY: {
+                title: corrFeature,
+                viewportMinimum: minY,
+                viewportMaximum: maxY
+            },
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+    chart.render();
 }
