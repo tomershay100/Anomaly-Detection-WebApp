@@ -11,5 +11,8 @@
   "description": "",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "smallest-enclosing-circle": "^1.0.2"
   }
 }

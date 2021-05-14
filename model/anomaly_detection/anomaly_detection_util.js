@@ -22,6 +22,23 @@ class Point {
         this._x = x;
         this._y = y;
     }
+
+    toJson() {
+        return {x: this._x, y: this._y};
+    }
+}
+
+class Circle {
+    constructor(x, y, r) {
+        this._x = x;
+        this._y = y;
+        this._radius = r;
+    }
+
+    static fromJson(json) {
+        let map = JSON.parse(JSON.stringify(json));
+        return Circle.constructor(map["x"], map["y"], map["r"]);
+    }
 }
 
 class AnomalyDetectionUtil {
@@ -77,5 +94,9 @@ class AnomalyDetectionUtil {
             x *= -1;
         }
         return x;
+    }
+
+    static dis2Points(p1, p2) {
+        return Math.sqrt(Math.pow(p1._x - p2._x, 2) + Math.pow(p1._y - p2._y, 2));
     }
 }
