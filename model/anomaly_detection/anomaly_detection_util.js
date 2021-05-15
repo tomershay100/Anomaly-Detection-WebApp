@@ -28,6 +28,7 @@ class Point {
     }
 }
 
+
 class Circle {
     constructor(x, y, r) {
         this._x = x;
@@ -100,3 +101,6 @@ class AnomalyDetectionUtil {
         return Math.sqrt(Math.pow(p1._x - p2._x, 2) + Math.pow(p1._y - p2._y, 2));
     }
 }
+
+module.exports = {AnomalyDetectionUtil, Point, Circle, Line};
+

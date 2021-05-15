@@ -4,7 +4,7 @@ const {SimpleAnomalyDetector} = require('./anomaly_detection/SimpleAnomalyDetect
 
 class AnomalyManager{
     constructor() {
-        this._detector = SimpleAnomalyDetector.prototype;
+        this._detector = new SimpleAnomalyDetector(0);
         this._allDataPoints = [];
         this._anomalyDataPoints = [];
         this._train = null;
@@ -29,7 +29,7 @@ class AnomalyManager{
 
 
     learn(){
-        this._detector.learnNormal(this._tarin);
+        this._detector.learnNormal(this._train);
     }
 
     detect(){
@@ -71,6 +71,7 @@ class AnomalyManager{
                             anomalies.push(str);
                             str = []
                         }
+                        console.log(str)
                         str.push(timeStep);
                         isFirst = false;
                     }

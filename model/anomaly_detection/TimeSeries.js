@@ -5,11 +5,11 @@ class TimeSeries {
         this._csvMap = JSON.parse(JSON.stringify(DATAJson));
         this._featuresList = Object.keys(this._csvMap);
         this._columnsSize = this._csvMap[this._featuresList[0]].length;
-        this._rowsSize = this._csvMap.size;
+        this._rowsSize = this._featuresList.length;
     }
 
     getColumn(key) {
-        return this._csvMap.has(key) ? this._csvMap[key] : [];
+        return typeof this._csvMap[key] !== "undefined" ? this._csvMap[key] : [];
     }
 
     getColumnSize() {

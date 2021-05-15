@@ -18,8 +18,6 @@ class Model {
 
 let models = {};
 let anomalyManagers = {};
-// let trainTimesSeries = {};
-// let testTimeSeries = {};
 let id = 0;
 
 const express = require('express');
@@ -27,11 +25,8 @@ const {AnomalyManager} = require("../model/anomaly_manager");
 const backend_controller = express();
 backend_controller.use(express.json({limit: '50mb'}));
 backend_controller.use(express.urlencoded({limit: '50mb'}));
-//if(process.cwd().split('\\')[-1] === 'controller')
-//backend_controller.use(express.json({limit: '50mb'}));
-//backend_controller.use(express.urlencoded({limit: '50mb'}));
 let cwdProc = process.cwd().split('\\');
-if(cwdProc[cwdProc.length-1] === 'controller')
+if (cwdProc[cwdProc.length - 1] === 'controller')
     process.chdir('../');
 
 backend_controller.get('/', ((req, res) => {
@@ -55,14 +50,19 @@ backend_controller.post('/api/model', ((req, res) => {
     models[++id] = new Model(id, "pending");
     anomalyManagers[id] = new AnomalyManager();
     anomalyManagers[id].uploadTrain(req.body["train_data"]);
+    anomalyManagers[id].learn();
     res.send(models[id].toJson());
 }))
 
 //Test POST
 backend_controller.post('/api/anomaly', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)){
+    if (models.hasOwnProperty(req.query.model_id)) {
         anomalyManagers[req.query.model_id].uploadTest(req.body["predict_data"]);
         res.status(200).end();
+        //while(models[req.query.model_id].status === "pending"){
+        anomalyManagers[req.query.model_id].detect()
+        models[req.query.model_id].status = "ready"
+        //}
     } else {
         res.status(404).end();
     }
@@ -82,11 +82,10 @@ backend_controller.delete('/api/model', ((req, res) => {
     res.status(deleteModel(req.query.model_id)).end();
 }))
 
-function deleteModel(modelId){
+function deleteModel(modelId) {
     if (models.hasOwnProperty(modelId)) {
         delete models[modelId];
-        anomalyManagers[modelId].deleteTrain();
-        anomalyManagers[modelId].deleteTest();
+        delete anomalyManagers[modelId];
         return 200;
     } else {
         return 404;
@@ -95,21 +94,19 @@ function deleteModel(modelId){
 
 
 backend_controller.get('/api/anomaly', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)) {
-        if (models[req.query.model_id].status === "pending") {
-            models[req.query.model_id].status = "ready";
-            sleep(3000).then(() => {
-                res.send({feature: "airspeed-kt" /*req.query.feature + "1"*/, anomalies: [[2, 3], [50, 300]]});
-                res.status(200).end();
-            });
+        if (models.hasOwnProperty(req.query.model_id)) {
+            if (models[req.query.model_id].status === "ready") {
+                console.log(req.query.feature)
+                res.send({
+                    feature: anomalyManagers[req.query.model_id].mostCorrelative(req.query.feature),
+                    anomalies: anomalyManagers[req.query.model_id].getAnomalies(req.query.feature)
+                })
+                    .status(200).end();
+            }
+        } else {
+            res.status(404).end()
         }
-        else {
-            res.send({feature: "airspeed-kt" /*req.query.feature + "1"*/, anomalies: [[2, 3], [50, 70]]});
-            res.status(200).end();
-        }
-    } else {
-        res.status(404).end()
     }
-}))
+))
 
 backend_controller.listen(8080);
