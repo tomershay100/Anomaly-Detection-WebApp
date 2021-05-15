@@ -36,7 +36,7 @@ backend_controller.get('/', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.html');
 }))
 
-backend_controller.get('/frontend_controller.js', ((req, res) => {
+backend_controller.get('/controller/frontend_controller.js', ((req, res) => {
     res.sendFile(process.cwd() + '/controller/frontend_controller.js');
 }))
 
@@ -46,6 +46,10 @@ backend_controller.get('/style.css', ((req, res) => {
 
 backend_controller.get('/index.js', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.js');
+}))
+
+backend_controller.get('/favicon.ico', ((req, res) => {
+    res.sendFile(process.cwd() + '/view/favicon.ico');
 }))
 
 //Train POST

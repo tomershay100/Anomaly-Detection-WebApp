@@ -87,10 +87,21 @@ select option:hover{
     }
 }
 
-#anomaliesGraph {
+/*#anomaliesGraph {
     height: 90%;
     width: 100%;
     display: none;
+}*/
+.lowGraph {
+    height: 50%;
+    bottom: 0;
+}
+.highGraph {
+    height: 50%;
+    top: 0;
+}
+#correlatedFeatureGraph {
+    height: 50%;
 }
 
 section {
