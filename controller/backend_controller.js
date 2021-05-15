@@ -67,7 +67,7 @@ backend_controller.post('/api/anomaly', ((req, res) => {
         anomalyManagers[req.query.model_id].uploadTest(req.body["predict_data"]);
         anomalyManagers[req.query.model_id].detect();
         models[req.query.model_id].status = "ready";
-        sleep(3000).then(() => {
+        sleep(3500).then(() => {
             res.status(200).end();
         });
     } else {
