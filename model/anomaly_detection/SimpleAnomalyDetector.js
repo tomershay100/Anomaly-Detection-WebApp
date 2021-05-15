@@ -1,6 +1,5 @@
 const {AnomalyDetectionUtil} = require("./anomaly_detection_util");
 const {Point} = require("./anomaly_detection_util");
-const {TimeSeries} = require('./TimeSeries');
 
 class CorrelatedFeatures {
     constructor(feature1, feature2, correlation, threshold) {
@@ -11,18 +10,9 @@ class CorrelatedFeatures {
         this._circle = null;
         this._threshold = threshold;
         this._allPoints = [];
-        this._anomalies = [];
         this._anomaliesTimeStep = [];
     }
 }
-
-class AnomalyReport {
-    constructor(description, timeStep) {
-        this._description = description;
-        this._timeStep = description;
-    }
-}
-
 class SimpleAnomalyDetector {
     constructor(threshold) {
         this._threshold = threshold;
@@ -40,7 +30,7 @@ class SimpleAnomalyDetector {
         for (let i = 0; i < timeSeries.getRowSize(); i++) {
             let f1 = timeSeries.getFeatures()[i];
             let f2 = "";
-            let correlation;
+            let correlation = 0;
             biggestPearson = this._threshold;
             for (let j = 0; j < timeSeries.getRowSize(); j++) {
                 if (i === j) {
@@ -65,7 +55,7 @@ class SimpleAnomalyDetector {
     createForm(ts) {
         for (let i = 0; i < this._cf.length; i++) {
             let array = [];
-            for (let j = 0; j < ts.getRowSize(); j++) {
+            for (let j = 0; j < ts.getColumnSize(); j++) {
                 array[j] = new Point(ts.getColumn(this._cf[i]._feature1)[j], ts.getColumn(this._cf[i]._feature2)[j]);
             }
             this._cf[i]._line = this.createCorrelativeForm(array);
@@ -97,11 +87,10 @@ class SimpleAnomalyDetector {
 
     detect(ts) {
         for (let j = 0; j < this._cf.length; j++) {
-            for (let i = 0; i < ts.getRowSize(); i++) {
+            for (let i = 0; i < ts.getColumnSize(); i++) {
                 let p = new Point(ts.getColumn(this._cf[j]._feature1)[i], ts.getColumn(this._cf[j]._feature2)[i])
                 let devAbs = this.devFromForm(p, this._cf[j]);
                 if (this._cf[j]._threshold * 1.1 < devAbs) {
-                    this._cf[j]._anomalies.push(p);
                     this._cf[j]._anomaliesTimeStep.push(i);
                 }
                 this._cf[j]._allPoints.push(p);
@@ -110,4 +99,4 @@ class SimpleAnomalyDetector {
     }
 }
 
-module.exports = {SimpleAnomalyDetector};
+module.exports = {SimpleAnomalyDetector, CorrelatedFeatures};

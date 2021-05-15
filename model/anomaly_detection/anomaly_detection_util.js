@@ -83,7 +83,7 @@ class AnomalyDetectionUtil {
             y[i] = points[i]._y;
         }
 
-        let a = AnomalyDetectionUtil.Cov(x, y) / AnomalyDetectionUtil.Var(x);
+        let a = AnomalyDetectionUtil.Var(x) === 0 ? 0 : (AnomalyDetectionUtil.Cov(x, y) / AnomalyDetectionUtil.Var(x));
         let b = AnomalyDetectionUtil.Avg(y) - a * AnomalyDetectionUtil.Avg(x);
 
         return new Line(a, b);

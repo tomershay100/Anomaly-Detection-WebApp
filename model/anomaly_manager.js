@@ -1,10 +1,9 @@
 const {Line} = require("./anomaly_detection/anomaly_detection_util");
 const {TimeSeries} = require("./anomaly_detection/TimeSeries");
-const {SimpleAnomalyDetector} = require('./anomaly_detection/SimpleAnomalyDetector');
 
 class AnomalyManager{
-    constructor() {
-        this._detector = new SimpleAnomalyDetector(0);
+    constructor(detector) {
+        this._detector = detector;
         this._allDataPoints = [];
         this._anomalyDataPoints = [];
         this._train = null;
@@ -64,6 +63,7 @@ class AnomalyManager{
                 let isFirst = true;
                 let anomalies = [];
                 let str = [];
+                //console.log("anomalies of " + column + ": " + c._anomaliesTimeStep)
                 for (let timeStep of c._anomaliesTimeStep){
                     if (isFirst || timeStep-prevTimeStep > 1){
                         if (!isFirst){
@@ -71,7 +71,6 @@ class AnomalyManager{
                             anomalies.push(str);
                             str = []
                         }
-                        console.log(str)
                         str.push(timeStep);
                         isFirst = false;
                     }

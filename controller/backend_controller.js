@@ -1,3 +1,6 @@
+const {SimpleAnomalyDetector} = require('../model/anomaly_detection/SimpleAnomalyDetector');
+const {HybridAnomalyDetector} = require('../model/anomaly_detection/HybridAnomalyDetector');
+
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -48,7 +51,11 @@ backend_controller.get('/index.js', ((req, res) => {
 //Train POST
 backend_controller.post('/api/model', ((req, res) => {
     models[++id] = new Model(id, "pending");
-    anomalyManagers[id] = new AnomalyManager();
+    if (req.query.model_type === 'hybrid')
+        anomalyManagers[id] = new AnomalyManager(new HybridAnomalyDetector(0));
+    else
+        anomalyManagers[id] = new AnomalyManager(new SimpleAnomalyDetector(0));
+
     anomalyManagers[id].uploadTrain(req.body["train_data"]);
     anomalyManagers[id].learn();
     res.send(models[id].toJson());
@@ -58,11 +65,11 @@ backend_controller.post('/api/model', ((req, res) => {
 backend_controller.post('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         anomalyManagers[req.query.model_id].uploadTest(req.body["predict_data"]);
-        res.status(200).end();
-        //while(models[req.query.model_id].status === "pending"){
-        anomalyManagers[req.query.model_id].detect()
-        models[req.query.model_id].status = "ready"
-        //}
+        anomalyManagers[req.query.model_id].detect();
+        models[req.query.model_id].status = "ready";
+        sleep(3000).then(() => {
+            res.status(200).end();
+        });
     } else {
         res.status(404).end();
     }
@@ -92,16 +99,14 @@ function deleteModel(modelId) {
     }
 }
 
-
 backend_controller.get('/api/anomaly', ((req, res) => {
         if (models.hasOwnProperty(req.query.model_id)) {
             if (models[req.query.model_id].status === "ready") {
-                console.log(req.query.feature)
+
                 res.send({
                     feature: anomalyManagers[req.query.model_id].mostCorrelative(req.query.feature),
                     anomalies: anomalyManagers[req.query.model_id].getAnomalies(req.query.feature)
-                })
-                    .status(200).end();
+                }).status(200).end();
             }
         } else {
             res.status(404).end()
