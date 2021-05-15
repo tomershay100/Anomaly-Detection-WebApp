@@ -1,3 +1,6 @@
+const {SimpleAnomalyDetector} = require('../model/anomaly_detection/SimpleAnomalyDetector');
+const {HybridAnomalyDetector} = require('../model/anomaly_detection/HybridAnomalyDetector');
+
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -16,82 +19,99 @@ class Model {
     }
 }
 
-models = {};
-id = 0;
+let models = {};
+let anomalyManagers = {};
+let id = 0;
 
 const express = require('express');
-const app = express();
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb'}));
+const {AnomalyManager} = require("../model/anomaly_manager");
+const backend_controller = express();
+backend_controller.use(express.json({limit: '50mb'}));
+backend_controller.use(express.urlencoded({limit: '50mb'}));
 let cwdProc = process.cwd().split('\\');
-if(cwdProc[cwdProc.length-1] === 'controller')
+if (cwdProc[cwdProc.length - 1] === 'controller')
     process.chdir('../');
 
-app.get('/', ((req, res) => {
+backend_controller.get('/', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.html');
 }))
 
-app.get('/frontend_controller.js', ((req, res) => {
+backend_controller.get('/frontend_controller.js', ((req, res) => {
     res.sendFile(process.cwd() + '/controller/frontend_controller.js');
 }))
 
-app.get('/style.css', ((req, res) => {
+backend_controller.get('/style.css', ((req, res) => {
     res.sendFile(process.cwd() + '/view/style.css');
 }))
 
-app.get('/index.js', ((req, res) => {
+backend_controller.get('/index.js', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.js');
 }))
 
-app.post('/api/model', ((req, res) => {
-    //console.log(req.query.model_type);
-    //console.log(req.body);
-    models[++id] = new Model(id,"pending");
+//Train POST
+backend_controller.post('/api/model', ((req, res) => {
+    models[++id] = new Model(id, "pending");
+    if (req.query.model_type === 'hybrid')
+        anomalyManagers[id] = new AnomalyManager(new HybridAnomalyDetector(0));
+    else
+        anomalyManagers[id] = new AnomalyManager(new SimpleAnomalyDetector(0));
+
+    anomalyManagers[id].uploadTrain(req.body["train_data"]);
+    anomalyManagers[id].learn();
     res.send(models[id].toJson());
 }))
 
-app.get('/api/model', ((req, res) => {
+//Test POST
+backend_controller.post('/api/anomaly', ((req, res) => {
+    if (models.hasOwnProperty(req.query.model_id)) {
+        anomalyManagers[req.query.model_id].uploadTest(req.body["predict_data"]);
+        anomalyManagers[req.query.model_id].detect();
+        models[req.query.model_id].status = "ready";
+        sleep(3000).then(() => {
+            res.status(200).end();
+        });
+    } else {
+        res.status(404).end();
+    }
+}))
+
+
+backend_controller.get('/api/model', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         res.send(models[req.query.model_id].toJson());
-        res.status(200).end()
+        res.status(200).end();
     } else {
-        res.status(404).end()
+        res.status(404).end();
     }
 }))
 
-app.delete('/api/model', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)) {
-        delete models[req.query.model_id];
-        res.status(200).end()
-    } else {
-        res.status(404).end()
-    }
+backend_controller.delete('/api/model', ((req, res) => {
+    res.status(deleteModel(req.query.model_id)).end();
 }))
 
-app.post('/api/anomaly', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)) {
-        res.status(200).end()
+function deleteModel(modelId) {
+    if (models.hasOwnProperty(modelId)) {
+        delete models[modelId];
+        delete anomalyManagers[modelId];
+        return 200;
     } else {
-        res.status(404).end()
+        return 404;
     }
-}))
+}
 
-app.get('/api/anomaly', ((req, res) => {
-    if (models.hasOwnProperty(req.query.model_id)) {
-        if (models[req.query.model_id].status === "pending") {
-            models[req.query.model_id].status = "ready";
-            sleep(3000).then(() => {
-                res.send({feature: "airspeed-kt" /*req.query.feature + "1"*/, anomalies: [[2, 3], [50, 300]]});
-                res.status(200).end();
-            });
+backend_controller.get('/api/anomaly', ((req, res) => {
+        if (models.hasOwnProperty(req.query.model_id)) {
+            if (models[req.query.model_id].status === "ready") {
+
+                res.send({
+                    feature: anomalyManagers[req.query.model_id].mostCorrelative(req.query.feature),
+                    anomalies: anomalyManagers[req.query.model_id].getAnomalies(req.query.feature)
+                }).status(200).end();
+            }
+        } else {
+            res.status(404).end()
         }
-        else {
-            res.send({feature: "airspeed-kt" /*req.query.feature + "1"*/, anomalies: [[2, 3], [50, 70]]});
-            res.status(200).end();
-        }
-    } else {
-        res.status(404).end()
     }
-}))
+))
 
-app.listen(8080);
+backend_controller.listen(8080);

@@ -105,7 +105,7 @@ function onLoadTest() {
     let httpRequest;
     httpRequest = new XMLHttpRequest();
 
-    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&?feature=" + currentFeature(), true);
+    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&feature=" + currentFeature(), true);
     httpRequest.send();
 
     httpRequest.onload = function () {
@@ -135,7 +135,7 @@ function analyzedSelection() {
 
     let httpRequest;
     httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&?feature=" + feature, true);
+    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&feature=" + feature, true);
     httpRequest.send();
 
     httpRequest.onload = function () {
