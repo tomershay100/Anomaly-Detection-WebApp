@@ -5,17 +5,9 @@
 
 body {
     background-color: #2B2B2B;
-    /*
-    color: white;
-    */
+    font-family: 'Roboto Light', sans-serif;
 }
 
-/*html[data-theme='dark'] {
-    --text-color-normal: hsl(210, 10%, 62%);
-    --text-color-light: hsl(210, 15%, 35%);
-    --text-color-richer: hsl(210, 50%, 72%);
-    --text-color-highlight: hsl(25, 70%, 45%);
-}*/
 
 .right {
     background-color: #2B2B2B;
@@ -143,13 +135,13 @@ section .loader span::before {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: #5c8db8;
-    box-shadow: 0 0 10px #5c8db8,
-    0 0 20px #5c8db8,
-    0 0 40px #5c8db8,
-    0 0 60px #5c8db8,
-    0 0 80px #5c8db8,
-    0 0 100px #5c8db8;
+    background: #79a9e5;
+    box-shadow: 0 0 10px #79a9e5,
+    0 0 20px #79a9e5,
+    0 0 40px #79a9e5,
+    0 0 60px #79a9e5,
+    0 0 80px #79a9e5,
+    0 0 100px #79a9e5;
     animation: animate 2s linear infinite;
     animation-delay: calc(0.1s * var(--i));
 }
@@ -168,13 +160,12 @@ input[type="file"] {
 }
 
 .custom-file-upload {
-    border: 1px solid #ccc;
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
 }
 
-button {
+/*button {
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -184,7 +175,7 @@ button {
     text-decoration: none;
     font-size: inherit;
     font-family: inherit;
-}
+}*/
 
 .learn-more {
     font-weight: 600;
@@ -234,73 +225,6 @@ button {
 }
 
 
-.rad-label {
-    display: flex;
-    align-items: center;
-
-    border-radius: 100px;
-    margin: 20px -20px;
-
-    cursor: pointer;
-    transition: .3s;
-}
-
-.rad-label:hover,
-.rad-label:focus-within {
-    background: hsla(0, 0%, 80%, .14);
-}
-
-.rad-input {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    z-index: -1;
-}
-
-.rad-design {
-    width: 22px;
-    height: 22px;
-    border-radius: 100px;
-
-    background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
-    position: relative;
-}
-
-.rad-design::before {
-    content: '';
-
-    display: inline-block;
-    width: inherit;
-    height: inherit;
-    border-radius: inherit;
-
-    background: hsl(0, 0%, 90%);
-    transform: scale(1.1);
-    transition: .3s;
-}
-
-.rad-input:checked+.rad-design::before {
-    transform: scale(0);
-}
-
-.rad-text {
-    color: hsl(0, 0%, 100%);
-    margin-left: 14px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-size: 18px;
-    font-weight: 900;
-
-    transition: .3s;
-}
-
-.rad-input:checked~.rad-text {
-    color: hsl(0, 0%, 40%);
-}
-
 .abs-site-link {
     position: fixed;
     bottom: 40px;
@@ -309,5 +233,73 @@ button {
     font-size: 16px;
 }
 
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    cursor: pointer;
+}
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+    font-size: 20px;
+    position: relative;
+    padding-left: 44px;
+    cursor: pointer;
+    line-height: 28px;
+    display: inline-block;
+    color: #cdcdcd;
+}
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+}
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(to right bottom, #ff0096, #ffb2d4);
+    position: absolute;
+    top: 10%;
+    left: 0.236ch;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    cursor: pointer;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    cursor: pointer;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
 
+.submit {
+    bottom: 5%;
+    height: 4vh;
+    width: 75%;
+    position: absolute;
+    text-align: center;
+    font-size: 30px;
+    font-weight: unset;
+}
 
+.upload {
+    width: 75%;
+    position: absolute;
+}

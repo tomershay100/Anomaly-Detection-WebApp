@@ -64,47 +64,47 @@
         </style>
 
         <select class="list" id="featuresList" name="featuresList" size="13"
-                                                  onchange="selectedFeature()" >
+                onchange="selectedFeature()">
 
         </select>
     </form>
 </div>
 <div class="left down">
-    <label for="trainFile" class="custom-file-upload learn-more">
+    <label for="trainFile" class="custom-file-upload learn-more upload">
         <i class="fa fa-cloud-upload"></i>
         <p id="trainFileName" style="display:inline">Train Upload</p>
     </label>
     <input type="file" id="trainFile" onchange="saveTrainFile(this)" accept=".csv">
 
-    <hr style="height:3pt; visibility:hidden;"/>
+    <hr style="height:30pt; visibility:hidden;"/>
 
-    <label for="testFile" class="custom-file-upload learn-more">
+    <label for="testFile" class="custom-file-upload learn-more upload">
         <i class="fa fa-cloud-upload"></i>
         <p id="testFileName" style="display:inline">Test Upload</p>
     </label>
     <input type="file" id="testFile" onchange="saveTestFile(this)" accept=".csv">
-    <div class="" style="display: inline">
 
-        <label class="rad-label">
-            <input class="rad-input" type="radio" id="regression" name="modelType" value="regression"
-                   checked="checked">
-            <div class="rad-design"></div>
-            <div class="rad-text" for="regression">linear regression</div>
-        </label>
-        <label class="rad-label">
-            <input class="rad-input" type="radio" id="hybrid" name="modelType" value="regression">
-            <div class="rad-design"></div>
-            <div class="rad-text" for="hybrid">hybrid</div>
-        </label>
-    </div>
+    <hr style="height:40pt; visibility:hidden;"/>
 
-    <br><br>
-    <label for="submit" class="custom-file-upload learn-more">
-        <i class="fa fa-cloud-upload"></i> Submit
+    <form action="#">
+        <p>
+            <input type="radio" id="regression" name="modelType" checked style="display: none">
+            <label class="rad-label" for="regression">Linear Regression</label>
+        </p>
+        <hr style="height:8pt; visibility:hidden;"/>
+        <p>
+            <input type="radio" id="hybrid" name="modelType" style="display: none">
+            <label for="hybrid">Hybrid</label>
+        </p>
+    </form>
+
+    <hr style="height:18pt; visibility:hidden;"/>
+
+    <label for="submit" class="custom-file-upload learn-more submit">
+        <i class="fa fa-cloud-upload"></i> Detect Anomalies
     </label>
     <input id="submit" type="submit" onclick="submit()" style="display: none">
-    <br><br><br>
-    <p id="errorOnSubmit"></p>
+    <p id="errorOnSubmit" style="color: #dddddd"></p>
 </div>
 </body>
 </html>
