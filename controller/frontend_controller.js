@@ -5,6 +5,8 @@ let Features;
 let TrainMap;
 let TestMap;
 let ModelID;
+let currentFeature;
+let correlatedFeature;
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -64,7 +66,6 @@ function submitPressed(trainJson, testJson, modelType) {
         httpRequest.open("DELETE", "/api/model" + "?model_id=" + ModelID, true);
         httpRequest.send();
         httpRequest.onload = function () {
-            if (this.readyState === 4 && this.status === 200)
                 sendDataToServer(trainJson, testJson, modelType);
         };
     } else {
@@ -101,19 +102,6 @@ function onLoadTrain(testJson) {
     };
 }
 
-function onLoadTest() {
-    let httpRequest;
-    httpRequest = new XMLHttpRequest();
-
-    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&feature=" + currentFeature(), true);
-    httpRequest.send();
-
-    httpRequest.onload = function () {
-        if (this.readyState === 4 && this.status === 200)
-            onLoadFeedback();
-    };
-}
-
 function onLoadFeedback() {
     deleteFeaturesList();
     let isFirst = true;
@@ -129,7 +117,7 @@ function onLoadFeedback() {
 }
 
 function analyzedSelection() {
-    let feature = currentFeature();
+    let feature = getCurrentFeature();
     let corrFeature;
     let anomalies;
 
@@ -142,75 +130,43 @@ function analyzedSelection() {
         if (this.readyState === 4 && this.status === 200) {
             anomalies = JSON.parse(httpRequest.response)["anomalies"];
             corrFeature = JSON.parse(httpRequest.response)["feature"];
-            drawGraph(feature, corrFeature, anomalies);
+            updateGraphs(feature, corrFeature, anomalies);
         }
     };
 }
 
-function drawGraph(feature, corrFeature, anomalies) {
-    let maxX = 0;
-    let minX = 0;
-    let isFirst = true;
-    let maxY = 0;
-    let minY = 0;
-    let data = [];
-    let dataSeries = {
-        type: "line", markerSize: 5, showLine: false, dataPoints: []
-    };
-    let dataPoints = [];
+function updateGraphs(feature, corrFeature, anomalies) {
+    let featurePoints = [];
+    let featureAnomalies = [];
+    let corrFeaturePoints = [];
+    let corrFeatureAnomalies = [];
     for (let i = 0; i < TestMap[feature].length; i++) {
-        let isAnomaly = false;
+        let notAnomaly = true;
         for (const array of anomalies) {
             if (i >= array[0] && i < array[1]) {
-                isAnomaly = true;
-                break;
+                notAnomaly = false;
+                featureAnomalies.push({
+                    x: i,
+                    y: TestMap[feature][i],
+                });
+                corrFeatureAnomalies.push({
+                    x: i,
+                    y: TestMap[corrFeature][i],
+                });
             }
         }
-
-        let y = TestMap[corrFeature][i];
-        let x = TestMap[feature][i];
-
-        dataPoints.push({
-            x: x,
-            y: y,
-            markerColor: isAnomaly ? "#ff4da6" : "#0ff",
-        });
-        if (maxX < x || isFirst)
-            maxX = x;
-        if (minX > x || isFirst)
-            minX = x;
-        if (maxY < y || isFirst)
-            maxY = y;
-        if (minY > y || isFirst)
-            minY = y;
-        isFirst = false
+        if(notAnomaly) {
+            featurePoints.push({
+                x: i,
+                y: TestMap[feature][i],
+            });
+            corrFeaturePoints.push({
+                x: i,
+                y: TestMap[corrFeature][i],
+            });
+        }
     }
 
-    dataSeries.dataPoints = dataPoints;
-    data.push(dataSeries);
-
-    let chart = new CanvasJS.Chart("anomaliesGraph",
-        {
-            zoomEnabled: true,
-            theme: "dark2",
-            title: {
-                text: "Anomalies Graph"
-            },
-            axisX: {
-                title: feature,
-                viewportMinimum: minX,
-                viewportMaximum: maxX
-            },
-            axisY: {
-                title: corrFeature,
-                viewportMinimum: minY,
-                viewportMaximum: maxY
-            },
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-            }
-        });
-    chart.render();
+    drawCurrentGraph('current', feature, featurePoints, featureAnomalies);
+    drawCurrentGraph('correlated', corrFeature, corrFeaturePoints, corrFeatureAnomalies);
 }
