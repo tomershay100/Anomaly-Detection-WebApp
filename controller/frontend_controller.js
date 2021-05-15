@@ -101,19 +101,6 @@ function onLoadTrain(testJson) {
     };
 }
 
-function onLoadTest() {
-    let httpRequest;
-    httpRequest = new XMLHttpRequest();
-
-    httpRequest.open("GET", "/api/anomaly" + "?model_id=" + ModelID + "&feature=" + currentFeature(), true);
-    httpRequest.send();
-
-    httpRequest.onload = function () {
-        if (this.readyState === 4 && this.status === 200)
-            onLoadFeedback();
-    };
-}
-
 function onLoadFeedback() {
     deleteFeaturesList();
     let isFirst = true;
