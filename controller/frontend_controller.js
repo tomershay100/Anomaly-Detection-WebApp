@@ -97,7 +97,7 @@ function onLoadTrain(testJson) {
 
     httpRequest.onload = function () {
         if (this.readyState === 4 && this.status === 200)
-            onLoadTest();
+            onLoadFeedback();
     };
 }
 
