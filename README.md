@@ -13,7 +13,7 @@ This is a web application for flight anomalies detection.
     - [Project Description](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/README.md#project-description)
     - [Project Stucture](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/README.md#project-stucture)
     - [Features](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/README.md#features)
-    - [Web API]()
+    - [Web API](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/README.md#web-api)
 2. [Dependencies](#dependencies)  
 3. [Installation](#installation)
 
