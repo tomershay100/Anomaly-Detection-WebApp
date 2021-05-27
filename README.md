@@ -79,7 +79,7 @@ The server-client communication is based on the following API:
 2. Run the program: 
      ```
     $ cd Anomaly-Detection-WebApp
-    $ controller/backendController.js
+    $ node controller\backendController.js
     ```
 3. Open broswer and write on the URL:
     ```
