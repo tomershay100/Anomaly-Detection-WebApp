@@ -52,24 +52,11 @@ You can see more information about the class hierarchy in [UML](https://github.c
 
 For more features explanations, you can watch [this video](https://youtu.be/A17zRwg9bI0).
 
-### Web API
-The server-client communication is based on the following API:
-##### VERB &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATH &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; QUERT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BODY
-<sup> _// sending data to server (train file), respone: Model_</sup></br>
-   POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; model_type: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ train_data: < data > }</br></br>
-   <sup>_// request an exsisting modle by ID, respone: Model_</sup></br>
-   GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_id: int </br></br>
-  <sup> _// request to delete modle by ID, respone: status (200-OK or 404-NOT-FOUND)_</sup></br>
-   DELETE  &nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_id: int </br></br>
-   <sup>_// sending data to server (test file), respone: status (200-OK or 404-NOT-FOUND)_</sup></br>
-   POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/anomaly &nbsp;&nbsp; mode_id: int &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { predict_data: < data > }</br></br>
-   <sup>_// request to detected anomalies, respone: anomalies and correlated feature with status 200-OK if found, and 404-NOT-FOUND otherwise_</sup></br>
-   GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/anomaly &nbsp;&nbsp; mode_id: int, feature: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { correlatedFeature: [anomalies] }</br>
-   
+
 ## Dependencies
 1. [Node .js](https://nodejs.org/en/)
 2. [Chart.js](https://www.chartjs.org/docs/latest/getting-started/installation.html)
-3. [circle-enclose](https://www.npmjs.com/package/circle-enclose)
+3. [smallest-enclosing-circle](https://www.npmjs.com/package/smallest-enclosing-circle)
 
 ## Installation 
 1. Clone the repository from command line:  
