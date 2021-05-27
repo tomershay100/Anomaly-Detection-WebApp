@@ -1,4 +1,4 @@
-const {TimeSeries} = require("./anomaly_detection/TimeSeries");
+const {TimeSeries} = require("./anomalyDetection/TimeSeries");
 
 class AnomalyManager{
     constructor(detector) {

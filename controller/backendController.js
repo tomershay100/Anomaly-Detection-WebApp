@@ -1,5 +1,5 @@
-const {SimpleAnomalyDetector} = require('../model/anomaly_detection/SimpleAnomalyDetector');
-const {HybridAnomalyDetector} = require('../model/anomaly_detection/HybridAnomalyDetector');
+const {SimpleAnomalyDetector} = require('../model/anomalyDetection/SimpleAnomalyDetector');
+const {HybridAnomalyDetector} = require('../model/anomalyDetection/HybridAnomalyDetector');
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -24,37 +24,37 @@ let anomalyManagers = {};
 let id = 0;
 
 const express = require('express');
-const {AnomalyManager} = require("../model/anomaly_manager");
-const backend_controller = express();
-backend_controller.use(express.json({limit: '50mb'}));
-backend_controller.use(express.urlencoded({limit: '50mb'}));
+const {AnomalyManager} = require("../model/anomalyManager");
+const backendController = express();
+backendController.use(express.json({limit: '50mb'}));
+backendController.use(express.urlencoded({limit: '50mb'}));
 let cwdProc = process.cwd().split('\\');
 cwdProc = cwdProc[cwdProc.length - 1].split('/');
 if (cwdProc[cwdProc.length - 1] === 'controller')
     process.chdir('../');
 
-backend_controller.get('/', ((req, res) => {
+backendController.get('/', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.html');
 }))
 
-backend_controller.get('/controller/frontend_controller.js', ((req, res) => {
-    res.sendFile(process.cwd() + '/controller/frontend_controller.js');
+backendController.get('/controller/frontendController.js', ((req, res) => {
+    res.sendFile(process.cwd() + '/controller/frontendController.js');
 }))
 
-backend_controller.get('/style.css', ((req, res) => {
+backendController.get('/style.css', ((req, res) => {
     res.sendFile(process.cwd() + '/view/style.css');
 }))
 
-backend_controller.get('/index.js', ((req, res) => {
+backendController.get('/index.js', ((req, res) => {
     res.sendFile(process.cwd() + '/view/index.js');
 }))
 
-backend_controller.get('/favicon.ico', ((req, res) => {
+backendController.get('/favicon.ico', ((req, res) => {
     res.sendFile(process.cwd() + '/view/favicon.ico');
 }))
 
 //Train POST
-backend_controller.post('/api/model', ((req, res) => {
+backendController.post('/api/model', ((req, res) => {
     models[++id] = new Model(id, "pending");
     if (req.query.model_type === 'hybrid')
         anomalyManagers[id] = new AnomalyManager(new HybridAnomalyDetector(0));
@@ -67,7 +67,7 @@ backend_controller.post('/api/model', ((req, res) => {
 }))
 
 //Test POST
-backend_controller.post('/api/anomaly', ((req, res) => {
+backendController.post('/api/anomaly', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         anomalyManagers[req.query.model_id].uploadTest(req.body["predict_data"]);
         anomalyManagers[req.query.model_id].detect();
@@ -81,7 +81,7 @@ backend_controller.post('/api/anomaly', ((req, res) => {
 }))
 
 
-backend_controller.get('/api/model', ((req, res) => {
+backendController.get('/api/model', ((req, res) => {
     if (models.hasOwnProperty(req.query.model_id)) {
         res.send(models[req.query.model_id].toJson());
         res.status(200).end();
@@ -90,7 +90,7 @@ backend_controller.get('/api/model', ((req, res) => {
     }
 }))
 
-backend_controller.delete('/api/model', ((req, res) => {
+backendController.delete('/api/model', ((req, res) => {
     res.status(deleteModel(req.query.model_id)).end();
 }))
 
@@ -104,7 +104,7 @@ function deleteModel(modelId) {
     }
 }
 
-backend_controller.get('/api/anomaly', ((req, res) => {
+backendController.get('/api/anomaly', ((req, res) => {
         if (models.hasOwnProperty(req.query.model_id)) {
             if (models[req.query.model_id].status === "ready") {
 
@@ -119,4 +119,4 @@ backend_controller.get('/api/anomaly', ((req, res) => {
     }
 ))
 
-backend_controller.listen(8080);
+backendController.listen(8080);

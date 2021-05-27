@@ -1,5 +1,5 @@
-const {AnomalyDetectionUtil} = require("./anomaly_detection_util");
-const {Point} = require("./anomaly_detection_util");
+const {AnomalyDetectionUtil} = require("./anomalyDetectionUtil");
+const {Point} = require("./anomalyDetectionUtil");
 
 class CorrelatedFeatures {
     constructor(feature1, feature2, correlation, threshold) {
