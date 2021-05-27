@@ -67,10 +67,9 @@ The server-client communication is based on the following API:
    GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/anomaly &nbsp;&nbsp; mode_id: int, feature: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { correlatedFeature: [anomalies] }</br>
    
 ## Dependencies
-1. [FlightGear](https://www.flightgear.org/download/)
-2. [.NET 5.0](https://dotnet.microsoft.com/download/dotnet-framework/net48)
-3. [Oxyplot](https://www.nuget.org/packages/OxyPlot.Wpf/2.1.0-Preview1)
-4. [CircularGauge](https://www.nuget.org/packages/CircularGauge)
+1. [Node .js](https://nodejs.org/en/)
+2. [Chart.js](https://www.chartjs.org/docs/latest/getting-started/installation.html)
+3. [circle-enclose](https://www.npmjs.com/package/circle-enclose)
 
 ## Installation 
 1. Open FlightGear from command line:
