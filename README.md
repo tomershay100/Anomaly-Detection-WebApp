@@ -72,24 +72,16 @@ The server-client communication is based on the following API:
 3. [circle-enclose](https://www.npmjs.com/package/circle-enclose)
 
 ## Installation 
-1. Open FlightGear from command line:
+1. Clone the repository from command line:  
+    ```
+    $ git clone https://github.com/tomershay100/Anomaly-Detection-WebApp.git
+    ```
+2. Run the program: 
      ```
-    $ cd C:\Program Files\FlightGear 2020.3.6
-    $ cd bin
-    $ start fgfs.exe --generic=socket,in,10,127.0.0.1,5400,tcp,playback_small --fdm=null
+    $ cd Anomaly-Detection-WebApp
+    $ controller/backendController.js
     ```
-    Notice that ```C:\Program Files\FlightGear 2020.3.6``` is the path to the place where you download the FlightGear.
-
-2. Click _fly_ on FlightGear.
-    
-3. Clone the repository from **another** command line:  
+3. Open broswer and write on the URL:
     ```
-    $ git clone https://github.com/tomershay100/Flight-Inspection-App.git
+    localhost:8080
     ```
-4. Run the program: 
-     ```
-    $ cd Flight-Inspection-App
-    $ cd bin
-    $ start DesktopApp.exe
-    ```
-Notice it may take a while.
