@@ -1,5 +1,5 @@
 # REST API
-The server-client communication is based on the following API:
+The sclient-server communication is based on the following API:
 
 `<DATA>` is map that represent the csv file {`feature1` : `[value11, value12,...]`, `feature2` : `[value21, value22,...]`, ... }
 
