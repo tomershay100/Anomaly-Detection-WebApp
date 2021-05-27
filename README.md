@@ -55,25 +55,12 @@ For more features explanations, you can watch [this video](https://youtu.be/A17z
 ### Web API
 The server-client communication is based on the following API:
 ##### VERB &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PATH &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; QUERT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BODY
-   POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; model_type: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ train_data: < data > }</br>
+   POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; model_type: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ train_data: < data > } _ // sending data to server (train file), return value: Model_</br>
    GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_id: int </br>
    DELETE  &nbsp;&nbsp;&nbsp; /api/model &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode_id: int </br>
-
-    public void UploadTrain(string file); // Uploads the normal flight.
-
-    public void UploadTest(string file); // Uploads the test flight.
-
-    public void Learn(); // Learns the normal flight.
-
-    public void Detect(); // Detect anomalies from the test flight.
-
-    public OxyPlot.PlotModel GetShape(string _currColumn); // Returns a PlotModel that emphasizes the anomalies points in a relation to your detection algorithm.
-  
-    public string GetCorrelated(string _currColumn); // Returns the most correlative column according to the algorithm.
-  
-    public Tuple<List<string>, List<int>> GetAnomalies(string _currColumn); // Returns a Tuple of Lists. The first will be the descriptions of the anomalies and the second will be the line numbers of the anomalies.
-}
-```
+   POST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/anomaly &nbsp;&nbsp; mode_id: int &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { predict_data: < data > }</br>
+   GET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /api/anomaly &nbsp;&nbsp; mode_id: int, feature: string </br>
+   
 ## Dependencies
 1. [FlightGear](https://www.flightgear.org/download/)
 2. [.NET 5.0](https://dotnet.microsoft.com/download/dotnet-framework/net48)
