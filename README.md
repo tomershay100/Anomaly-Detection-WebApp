@@ -43,12 +43,12 @@ The view implemented in:
 
 
 Those classes can communicate via the Controller classes (backendController and frontedController) that defines the policy by which we operate in the View and Model.
-You can see more information about the class hierarchy in [UML](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/WebApp%20UML.pdf) and the [ProjectStructure](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/ProjectStructure.md).
+You can see more information about the class hierarchy in [UML](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/WebApp%20UML.pdf) and the [ProjectStructure](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/ProjectStructure.md). The backendController and the frontendController communicates according to the RESTful API that described [here](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/API.md). 
 
 ### Features
-* **Upload CSV File:** When the user clicks the ```Upload CSV Test File```  and uploads CSV file, the flight will start and the flightgear simulator will show the flight according to the uploaded file. 
+* **Train upload and Test upload buttons:** When the user clicks the ```Train upload``` or ```Test upload``` you will be able choose CSV file to upload for learning and detecting anomalies.
+* **Radio buttons** let you choose which algorithm you would like to detect anomalies with (```Regression``` or ```Hybrid```). 
 * **Flight Features Graphs:** The user can select a feature and its graph will be shown.
-* **Upload Several Test Files:** The user can upload as many test files as he wants. The last flight will stop and the next will start.
 
 For more features explanations, you can watch [this video](https://youtu.be/A17zRwg9bI0).
 
