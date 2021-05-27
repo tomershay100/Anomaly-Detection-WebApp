@@ -29,6 +29,7 @@ const backend_controller = express();
 backend_controller.use(express.json({limit: '50mb'}));
 backend_controller.use(express.urlencoded({limit: '50mb'}));
 let cwdProc = process.cwd().split('\\');
+cwdProc = cwdProc[cwdProc.length - 1].split('/');
 if (cwdProc[cwdProc.length - 1] === 'controller')
     process.chdir('../');
 

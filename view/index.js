@@ -117,12 +117,26 @@ function drawCurrentGraph(graphFeature, feature, featurePoints, featureAnomalies
     let title = 'anomalies';
     let graph = getGraph(graphFeature);
     if (typeof graph !== 'undefined') {
-        graph.data.datasets.forEach(dataset => {
-            dataset.data = featureAnomalies;
-            dataset.label = title;
-            featureAnomalies = featurePoints;
-            title = feature;
-        })
+        let i;
+        for (i = 0; i < featureAnomalies.length && graph.data.datasets[0].data.length; i++)
+            graph.data.datasets[0].data[i] = featureAnomalies[i];
+        if (featureAnomalies.length > graph.data.datasets[0].data.length)
+            for (; i < featureAnomalies.length; i++)
+                graph.data.datasets[0].data.push(featureAnomalies[i]);
+        else if (featureAnomalies.length < graph.data.datasets[0].data.length)
+            while (graph.data.datasets[0].data.length > featureAnomalies.length)
+                graph.data.datasets[0].data.pop();
+        graph.data.datasets[0].label = title;
+
+        for (i = 0; i < featurePoints.length && graph.data.datasets[1].data.length; i++)
+            graph.data.datasets[1].data[i] = featurePoints[i];
+        if (featurePoints.length > graph.data.datasets[1].data.length)
+            for (; i < featurePoints.length; i++)
+                graph.data.datasets[1].data.push(featurePoints[i]);
+        else if (featurePoints.length < graph.data.datasets[1].data.length)
+            while (graph.data.datasets[1].data.length > featurePoints.length)
+                graph.data.datasets[1].data.pop();
+        graph.data.datasets[1].label = feature;
         graph.options.plugins.title.text = (graphFeature === 'current' ? 'selected feature' : 'correlated feature') + " - " + feature;
         graph.update();
     } else {
