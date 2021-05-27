@@ -43,7 +43,7 @@ The view implemented in:
 
 
 Those classes can communicate via the Controller classes (backendController and frontedController) that defines the policy by which we operate in the View and Model.
-You can see more information about the class hierarchy in [UML](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/UML%20Diagram.pdf) and the [ProjectStructure]().
+You can see more information about the class hierarchy in [UML](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/UML%20Diagram.pdf) and the [ProjectStructure](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/ProjectStructure.md).
 
 ### Features
 * **Upload CSV File:** When the user clicks the ```Upload CSV Test File```  and uploads CSV file, the flight will start and the flightgear simulator will show the flight according to the uploaded file. 
