@@ -72,4 +72,4 @@ For more features explanations, you can watch [this video](https://youtu.be/A17z
     ```
     localhost:8080
     ```
-    or click [here](localhost:8080/)
+    or click [here](http://localhost:8080/)
