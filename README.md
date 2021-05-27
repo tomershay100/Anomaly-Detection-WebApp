@@ -19,12 +19,12 @@ This is a web application for flight anomalies detection.
 
 ## General
 ### Background
-This a web interface for anomalies detections. The Users are flight reserches or company's automatic services.
-The flight data includes the steering mode, speed, direction etc, and recorded into a csv file which can be loaded to the application.
-Thhis web applications displays a view designed to find anomalies in the data.
+This a web interface for anomalies detections. The Users are flight reserchers or company's automatic services.
+The CSV file includes features and values which can be loaded to the application.
+This web application displays on a graph the anomalies of a selected feature and the anomalies of the most correlative to t feature.
 
 ### Project Description
-The idea is that the user will upload a normal flight file (e.g. _train) file_. The program will learn the normal flight and then the user will upload any flight file (e.g. _test file_). The application presents important flight data (**yaw, pitch, airspeed** etc) and graphs, which represent the flight data of a specific chosen featre, from the beggining to the current time of the simulation. 
+The idea is that the user will upload a normal file (e.g. _train file_) . The program will learn the normal file and then the user will upload any file (e.g. _test file_). The application presents graphs, which represent the file data of a specific chosen featre and shows anomalies if exists.
 
 ### Project Stucture
 This project designed according to MVC architecture. The classes can be divided into 3 groups in order to divied the code into different layers.
@@ -46,8 +46,8 @@ Those classes can communicate via the Controller classes (backendController and 
 You can see more information about the class hierarchy in [UML](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/WebApp%20UML.pdf) and the [ProjectStructure](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/ProjectStructure.md). The backendController and the frontendController communicates according to the RESTful API that described [here](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/API.md). 
 
 ### Features
-* **Train upload and Test upload buttons:** When the user clicks the ```Train upload``` or ```Test upload``` you will be able choose CSV file to upload for learning and detecting anomalies.
-* **Radio buttons** let you choose which algorithm you would like to detect anomalies with (```Regression``` or ```Hybrid```). 
+* **Train upload and Test upload buttons:** When the user clicks the ```Train upload``` or ```Test upload``` he will be able choose CSV file to upload for learning and detecting anomalies.
+* **Radio buttons** let the user choose which algorithm he would like to detect anomalies with (```Regression``` or ```Hybrid```). 
 * **Flight Features Graphs:** The user can select a feature and its graph will be shown.
 
 For more features explanations, you can watch [this video](https://youtu.be/A17zRwg9bI0).
