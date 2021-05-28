@@ -5,7 +5,7 @@ The sclient-server communication is based on the following API:
 
 ## Upload train
 ### Request
-`POST /api/model` with _query parameters:_ `model_type`: `regression` or `hybrid`, _Body:_ `{train_data: <DATA>}`
+`POST /api/model` with _query parameters:_ `model_type`: `"regression"` or `"hybrid"`, _Body:_ `{train_data: <DATA>}`
 ### Response
     HTTP/1.1 200 OK
     Date: Thu, 27 May 2021 14:33:59 GMT
