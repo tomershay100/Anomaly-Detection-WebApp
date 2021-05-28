@@ -46,17 +46,20 @@ Those classes can communicate via the Controller classes (backendController and 
 You can see more information about the class hierarchy in [UML](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/WebApp%20UML.pdf) and the [ProjectStructure](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/ProjectStructure.md). The backendController and the frontendController communicates according to the RESTful API that described [here](https://github.com/tomershay100/Anomaly-Detection-WebApp/blob/main/API.md). 
 
 ### Features
-* **Train upload and Test upload buttons:** When the user clicks the ```Train upload``` or ```Test upload``` he will be able choose CSV file to upload for learning and detecting anomalies.
-* **Radio buttons** let the user choose which algorithm he would like to detect anomalies with (```Regression``` or ```Hybrid```). 
-* **Flight Features Graphs:** The user can select a feature and its graph will be shown.
+* **Train upload** and **Test upload buttons:** When the user clicks the ```Train upload``` or ```Test upload``` he will be able choose CSV file to upload for learning and detecting anomalies.
+* **Radio buttons:** Let the user choose which algorithm he would like to detect anomalies with (```Regression``` or ```Hybrid```).
+* **Detect Anomalies button:** When the user clicks this button, the Train and the Test files will be sent to the server.
+* **Features List:** The user can select a feature from the files features.
+* **Graph:** After the user has selected feature, the feature and the most correlated feature graphs will be shown.
 
 For more features explanations, you can watch [this video](https://youtu.be/A17zRwg9bI0).
 
 
 ## Dependencies
-1. [Node .js](https://nodejs.org/en/)
-2. [Chart.js](https://www.chartjs.org/docs/latest/getting-started/installation.html)
-3. [smallest-enclosing-circle](https://www.npmjs.com/package/smallest-enclosing-circle)
+1. [Node.js](https://nodejs.org/en/)
+2. [express](https://expressjs.com/)
+3. [Chart.js](https://www.chartjs.org/docs/latest/getting-started/installation.html)
+4. [smallest-enclosing-circle](https://www.npmjs.com/package/smallest-enclosing-circle)
 
 ## Installation 
 1. Clone the repository from command line:  
@@ -68,8 +71,8 @@ For more features explanations, you can watch [this video](https://youtu.be/A17z
     $ cd Anomaly-Detection-WebApp
     $ node controller\backendController.js
     ```
-3. Open broswer and write on the URL:
+3. Open your browser and connect to:
     ```
     localhost:8080
     ```
-    or click [here](http://localhost:8080/)
+   by typing in the URL or by clicking [here](http://localhost:8080/)
