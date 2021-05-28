@@ -51,6 +51,7 @@ You can see more information about the class hierarchy in [UML](https://github.c
 * **Detect Anomalies button:** When the user clicks this button, the Train and the Test files will be sent to the server.
 * **Features List:** The user can select a feature from the files features.
 * **Graph:** After the user has selected feature, the feature and the most correlated feature graphs will be shown.
+![page](https://user-images.githubusercontent.com/64741182/119961287-8d411700-bfae-11eb-84b2-4af5f405adea.png)
 
 For more features explanations, you can watch [this video](https://youtu.be/A17zRwg9bI0).
 
