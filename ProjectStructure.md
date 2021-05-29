@@ -15,7 +15,7 @@ This file connects the frontendController to the Model. This Controller is actua
 After the frontendController sends HTTP Request to the backendController, the backendController uses the Model to learn and find anomalies in the test file and then sends HTTP Response to the frontendController.
 ## Model
 #### AnomalyManager:
-This class is one of the Models, it defines the functionality of the Model, like Facede Design Pattern. It calls the needed function for any request from the backendController. It contains an AnomalyDetector which responsible for files analysis, two TimeSeries (for the train and the test).
+This class is one of the Models, it defines the functionality of the Model, like Façade Design Pattern. It calls the needed function for any request from the backendController. It contains an AnomalyDetector which responsible for files analysis, two TimeSeries (for the train and the test).
 #### AnomalyDetectionUtil:
 The class is a kind of library of mathematical operations such as average, correlation, variance and regression line creation. This class is used for learning and processing flight data.
 #### SimpleAnomalyDetector:
